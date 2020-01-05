@@ -6,18 +6,30 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
+import {connect} from 'react-redux';
+import {loginUser} from '../redux/actions';
+class LoginScreen extends PureComponent {
+  state = {
+    regno: '',
+    password: '',
+  };
 
-export default class LoginScreen extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.token) {
+      return {token: nextProps.token};
+    } else {
+      return null;
+    }
   }
-  handleEmailInput(email) {
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(this.props);
+    if (this.props.token) {
+      this.props.navigation.navigate('Home');
+    }
+  }
+  handleRegnoInput(regno) {
     this.setState({
-      email: email,
+      regno: regno,
     });
   }
   handlePasswordInput(password) {
@@ -25,36 +37,60 @@ export default class LoginScreen extends PureComponent {
       password: password,
     });
   }
+  _login = async () => {
+    this.props.loginUser(this.state.regno, this.state.password);
+  };
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          onChangeText={text => this.handleEmailInput(text)}
-          value={this.state.email}
-          style={styles.email}
-          placeholder="Email"
-          autoCompleteType="email"
-          keyboardType="email-address"
-          returnKeyType="go"
-          textContentType="emailAddress"
-        />
-        <TextInput
-          onChangeText={text => this.handlePasswordInput(text)}
-          value={this.state.password}
-          style={styles.password}
-          placeholder="Password"
-          autoCompleteType="password"
-          returnKeyType="done"
-          secureTextEntry={true}
-          textContentType="password"
-        />
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => {
-            this.props.navigation.navigate('Home');
-          }}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
+        <View style={styles.loginFormContainer}>
+          <Text style={styles.error}>{this.props.err}</Text>
+          <TextInput
+            onChangeText={text => this.handleRegnoInput(text)}
+            value={this.state.regno}
+            style={styles.regno}
+            placeholder="Registration Number"
+            returnKeyType="go"
+            onSubmitEditing={() => {
+              this.passwordInput.focus();
+            }}
+            blurOnSubmit={false}
+            autoCapitalize="characters"
+            // inlineImageLeft="user_icon"
+            // inlineImagePadding={10}
+          />
+          <TextInput
+            onChangeText={text => this.handlePasswordInput(text)}
+            value={this.state.password}
+            style={styles.password}
+            placeholder="Password"
+            autoCompleteType="password"
+            returnKeyType="done"
+            secureTextEntry={true}
+            textContentType="password"
+            ref={input => {
+              this.passwordInput = input;
+            }}
+            // inlineImageLeft="lock_icon"
+            // inlineImagePadding={10}
+          />
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => {
+              this._login();
+            }}>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.registerContainer}>
+          <Text style={styles.noAccountText}>Don't have an account?</Text>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Register');
+            }}>
+            <Text style={styles.registerText}> Register Here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -62,15 +98,25 @@ export default class LoginScreen extends PureComponent {
 
 const styles = new StyleSheet.create({
   container: {
+    display: 'flex',
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    // backgroundColor: 'black',
+  },
+  loginFormContainer: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  email: {
-    borderColor: 'blue',
-    borderWidth: 1,
-    color: 'green',
+  error: {
+    color: 'red',
+    marginBottom: 5,
+  },
+  regno: {
+    backgroundColor: 'lightgrey',
+    // backgroundColor: 'white',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -78,9 +124,8 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   password: {
-    borderColor: 'green',
-    borderWidth: 1,
-    color: 'red',
+    backgroundColor: 'lightgrey',
+    // backgroundColor: 'white',
     fontSize: 20,
     minWidth: '100%',
     paddingLeft: 10,
@@ -89,11 +134,29 @@ const styles = new StyleSheet.create({
   loginButton: {
     width: '100%',
     marginTop: 20,
-    backgroundColor: 'blue',
+    backgroundColor: '#6bb9fb',
     padding: 10,
   },
   loginButtonText: {
     textAlign: 'center',
     fontSize: 20,
   },
+  registerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  noAccountText: {
+    fontSize: 14,
+  },
+  registerText: {
+    fontSize: 14,
+    color: 'blue',
+  },
 });
+
+const mapStateToProps = state => ({
+  err: state.user.loginErr,
+  token: state.user.token,
+});
+export default connect(mapStateToProps, {loginUser})(LoginScreen);
