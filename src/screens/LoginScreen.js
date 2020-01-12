@@ -5,12 +5,22 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {loginUser} from '../redux/actions';
+import Message from '../components/Message';
+
 class LoginScreen extends PureComponent {
+  constructor(props) {
+    super(props);
+    if (this.props.token) {
+      this.props.navigation.navigate('Home');
+    }
+    console.log('login screen constructor props: ', this.props);
+  }
   state = {
-    regno: '',
+    email: '',
     password: '',
   };
 
@@ -22,14 +32,14 @@ class LoginScreen extends PureComponent {
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    // console.log(this.props);
     if (this.props.token) {
+      ToastAndroid.show('Logged in successfully', ToastAndroid.SHORT);
       this.props.navigation.navigate('Home');
     }
   }
-  handleRegnoInput(regno) {
+  handleEmailInput(email) {
     this.setState({
-      regno: regno,
+      email: email,
     });
   }
   handlePasswordInput(password) {
@@ -38,26 +48,23 @@ class LoginScreen extends PureComponent {
     });
   }
   _login = async () => {
-    this.props.loginUser(this.state.regno, this.state.password);
+    this.props.loginUser(this.state.email, this.state.password);
   };
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.loginFormContainer}>
-          <Text style={styles.error}>{this.props.err}</Text>
+          <Message msg={this.props.msg} msgType={this.props.msgType} />
           <TextInput
-            onChangeText={text => this.handleRegnoInput(text)}
-            value={this.state.regno}
-            style={styles.regno}
-            placeholder="Registration Number"
+            onChangeText={text => this.handleEmailInput(text)}
+            value={this.state.email}
+            style={styles.email}
+            placeholder="Email"
+            autoCompleteType="email"
+            keyboardType="email-address"
             returnKeyType="go"
-            onSubmitEditing={() => {
-              this.passwordInput.focus();
-            }}
-            blurOnSubmit={false}
-            autoCapitalize="characters"
-            // inlineImageLeft="user_icon"
-            // inlineImagePadding={10}
+            textContentType="emailAddress"
+            autoCapitalize="none"
           />
           <TextInput
             onChangeText={text => this.handlePasswordInput(text)}
@@ -114,7 +121,7 @@ const styles = new StyleSheet.create({
     color: 'red',
     marginBottom: 5,
   },
-  regno: {
+  email: {
     backgroundColor: 'lightgrey',
     // backgroundColor: 'white',
     fontSize: 20,
@@ -156,7 +163,9 @@ const styles = new StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  err: state.user.loginErr,
-  token: state.user.token,
+  err: state.loginErr,
+  token: state.token,
+  msg: state.registerMsg ? state.registerMsg : state.loginMsg,
+  msgType: state.loginMsgType,
 });
 export default connect(mapStateToProps, {loginUser})(LoginScreen);

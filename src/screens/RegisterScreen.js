@@ -3,22 +3,48 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
+  TextInput,
+  ToastAndroid,
 } from 'react-native';
+// import {TextInput} from 'react-native-paper';
+import {connect} from 'react-redux';
+import {registerUser} from '../redux/actions';
+import Message from '../components/Message';
 
-export default class RegisterScreen extends PureComponent {
+class RegisterScreen extends PureComponent {
+  state = {
+    email: '',
+    name: '',
+    password: '',
+    confirmPassword: '',
+    regno: '',
+  };
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: '',
-      confirmPassword: '',
-    };
+    ToastAndroid.show('Registered Successfully', ToastAndroid.SHORT);
+  }
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.token) {
+      return {token: nextProps.token};
+    } else {
+      return null;
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.msgType === 'success') {
+      ToastAndroid.show('Registered Successfully', ToastAndroid.SHORT);
+      this.props.navigation.navigate('Home');
+    }
   }
   handleEmailInput(email) {
     this.setState({
       email: email,
+    });
+  }
+  handleNameInput(name) {
+    this.setState({
+      name: name,
     });
   }
   handlePasswordInput(password) {
@@ -26,52 +52,95 @@ export default class RegisterScreen extends PureComponent {
       password: password,
     });
   }
+  handleConfirmPasswordInput(password) {
+    this.setState({
+      confirmPassword: password,
+    });
+  }
+  handleRegnoInput(regno) {
+    this.setState({
+      regno: regno,
+    });
+  }
+  _register = async () => {
+    this.props.registerUser(
+      this.state.email,
+      this.state.name,
+      this.state.password,
+      this.state.confirmPassword,
+      this.state.regno,
+    );
+  };
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          onChangeText={text => this.handleEmailInput(text)}
-          value={this.state.email}
-          style={styles.email}
-          placeholder="Email"
-          autoCompleteType="email"
-          keyboardType="email-address"
-          returnKeyType="go"
-          textContentType="emailAddress"
-        />
-        <TextInput
-          onChangeText={text => this.handlePasswordInput(text)}
-          value={this.state.password}
-          style={styles.password}
-          placeholder="Password"
-          autoCompleteType="password"
-          returnKeyType="go"
-          secureTextEntry={true}
-          textContentType="password"
-        />
-        <TextInput
-          onChangeText={text => this.handlePasswordInput(text)}
-          value={this.state.confirmPassword}
-          style={styles.confirmPassword}
-          placeholder="Confirm Password"
-          returnKeyType="done"
-          secureTextEntry={true}
-          textContentType="password"
-        />
-        <TouchableOpacity
-          style={styles.registerButton}
-          onPress={() => {
-            this.props.navigation.navigate('Home');
-          }}>
-          <Text style={styles.registerButtonText}>Register</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.registerButton}
-          onPress={() => {
-            this.props.navigation.navigate('Login');
-          }}>
-          <Text style={styles.registerButtonText}>Login</Text>
-        </TouchableOpacity>
+        <View style={styles.registerFormContainer}>
+          <Message msg={this.props.msg} msgType={this.props.msgType} />
+          <TextInput
+            onChangeText={text => this.handleEmailInput(text)}
+            value={this.state.email}
+            style={styles.email}
+            placeholder="Email"
+            autoCompleteType="email"
+            keyboardType="email-address"
+            returnKeyType="go"
+            textContentType="emailAddress"
+            autoCapitalize="none"
+          />
+          <TextInput
+            onChangeText={text => this.handleNameInput(text)}
+            value={this.state.name}
+            style={styles.name}
+            placeholder="Name"
+            autoCompleteType="name"
+            returnKeyType="go"
+          />
+          <TextInput
+            onChangeText={text => this.handlePasswordInput(text)}
+            value={this.state.password}
+            style={styles.password}
+            placeholder="Password"
+            autoCompleteType="password"
+            returnKeyType="go"
+            secureTextEntry={true}
+            textContentType="password"
+          />
+          <TextInput
+            onChangeText={text => this.handleConfirmPasswordInput(text)}
+            value={this.state.confirmPassword}
+            style={styles.confirmPassword}
+            placeholder="Confirm Password"
+            returnKeyType="go"
+            secureTextEntry={true}
+            textContentType="password"
+          />
+          <TextInput
+            onChangeText={text => this.handleRegnoInput(text)}
+            value={this.state.regno}
+            style={styles.regno}
+            placeholder="Registration Number"
+            returnKeyType="done"
+            autoCapitalize="characters"
+          />
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={() => {
+              this._register();
+            }}>
+            <Text style={styles.registerButtonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.loginContainer}>
+          <Text style={styles.alreadyAccountText}>
+            Already have an account?
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.loginText}> Login Here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -79,15 +148,39 @@ export default class RegisterScreen extends PureComponent {
 
 const styles = new StyleSheet.create({
   container: {
+    display: 'flex',
     flex: 1,
+    height: '100%',
     padding: 20,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  registerFormContainer: {
+    display: 'flex',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  email: {
-    borderColor: 'blue',
-    borderWidth: 1,
+  error: {
+    backgroundColor: 'red',
+    color: 'red',
+    marginBottom: 5,
+  },
+  success: {
+    backgroundColor: 'green',
     color: 'green',
+    marginBottom: 5,
+  },
+  email: {
+    backgroundColor: 'lightgrey',
+    fontSize: 20,
+    minWidth: '100%',
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  name: {
+    backgroundColor: 'lightgrey',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -95,9 +188,7 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   password: {
-    borderColor: 'green',
-    borderWidth: 1,
-    color: 'red',
+    backgroundColor: 'lightgrey',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -105,9 +196,15 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   confirmPassword: {
-    borderColor: 'green',
-    borderWidth: 1,
-    color: 'red',
+    backgroundColor: 'lightgrey',
+    fontSize: 20,
+    minWidth: '100%',
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 10,
+  },
+  regno: {
+    backgroundColor: 'lightgrey',
     fontSize: 20,
     minWidth: '100%',
     paddingLeft: 10,
@@ -116,11 +213,31 @@ const styles = new StyleSheet.create({
   registerButton: {
     width: '100%',
     marginTop: 20,
-    backgroundColor: 'blue',
+    backgroundColor: '#6bb9fb',
     padding: 10,
   },
   registerButtonText: {
     textAlign: 'center',
     fontSize: 20,
   },
+  loginContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  alreadyAccountText: {
+    fontSize: 14,
+  },
+  loginText: {
+    fontSize: 14,
+    color: 'blue',
+  },
 });
+
+const mapStateToProps = state => ({
+  err: state.registerErr,
+  msg: state.registerMsg,
+  msgType: state.registerMsgType,
+  token: state.token,
+});
+export default connect(mapStateToProps, {registerUser})(RegisterScreen);
