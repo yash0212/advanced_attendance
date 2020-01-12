@@ -22,7 +22,6 @@ class RegisterScreen extends PureComponent {
   };
   constructor(props) {
     super(props);
-    ToastAndroid.show('Registered Successfully', ToastAndroid.SHORT);
   }
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.token) {
