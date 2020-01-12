@@ -165,7 +165,7 @@ const styles = new StyleSheet.create({
 const mapStateToProps = state => ({
   err: state.loginErr,
   token: state.token,
-  msg: state.registerMsg ? state.registerMsg : state.loginMsg,
+  msg: state.registerMsgType === 'success' ? state.registerMsg : state.loginMsg,
   msgType: state.loginMsgType,
 });
 export default connect(mapStateToProps, {loginUser})(LoginScreen);
