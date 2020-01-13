@@ -1,4 +1,4 @@
-var uri = 'http://db566417.ngrok.io/api/login';
+var uri = 'http://dda8611f.ngrok.io/api/login';
 // var uri = 'http://localhost/api/login';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/login';
 export const login = async (email, password) => {
@@ -9,11 +9,11 @@ export const login = async (email, password) => {
   });
 
   if (response.ok) {
-    const {message, access_token} = await response.json();
+    const {message, access_token, user} = await response.json();
     if (message !== undefined) {
       throw new Error(message);
     }
-    return access_token;
+    return {token: access_token, user: user};
   }
   if ((response.status = 400)) {
     var parsedBody = JSON.parse(await response.text());

@@ -6,7 +6,7 @@ export default class Message extends PureComponent {
     super(props);
   }
   render() {
-    console.log('Mesasge render props:', this.props);
+    // console.log('Mesasge render props:', this.props);
     if (this.props.msg) {
       return (
         <View style={styles.container}>

@@ -9,15 +9,17 @@ export const REGISTER_SENT = 'REGISTER_SENT';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_REJECTED = 'REGISTER_REJECTED';
 
+export const LOGOUT = 'LOGOUT';
 //Action Creators
 export const loginUser = (regno, password) => async dispatch => {
-  console.log('Login Fired');
+  // console.log('Login Fired');
   dispatch({type: LOG_IN_SENT});
   try {
-    const token = await login(regno, password);
-    dispatch({type: LOG_IN_SUCCESS, payload: token});
+    const data = await login(regno, password);
+    // console.log('action login success: ', data);
+    dispatch({type: LOG_IN_SUCCESS, payload: data});
   } catch (err) {
-    console.log('actions, login rejected: ', err.message);
+    // console.log('actions, login rejected: ', err.message);
     dispatch({type: LOG_IN_REJECTED, payload: err.message});
   }
 };
@@ -27,11 +29,11 @@ export const registerUser = (
   password,
   password_confirmation,
   regno,
-  type = 'student',
+  type = 1,
 ) => async dispatch => {
   dispatch({type: REGISTER_SENT});
   try {
-    const token = await register(
+    const data = await register(
       email,
       name,
       password,
@@ -39,7 +41,7 @@ export const registerUser = (
       regno,
       type,
     );
-    dispatch({type: REGISTER_SUCCESS, payload: token});
+    dispatch({type: REGISTER_SUCCESS, payload: data});
   } catch (err) {
     dispatch({type: REGISTER_REJECTED, payload: err.message});
   }

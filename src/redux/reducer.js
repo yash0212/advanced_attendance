@@ -6,6 +6,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_REJECTED,
   REGISTER_SENT,
+  LOGOUT,
 } from './actions';
 
 const merge = (a, b) => {
@@ -16,13 +17,17 @@ const reducer = (state = {}, action) => {
     case LOG_IN_SENT:
       return merge(state, {loginMsg: ''});
     case LOG_IN_SUCCESS:
-      return merge(state, {token: action.payload});
+      return merge(state, {
+        user: action.payload.user,
+        token: action.payload.token,
+      });
     case LOG_IN_REJECTED:
       return merge(state, {loginMsg: action.payload, loginMsgType: 'error'});
     case REGISTER_SENT:
       return merge(state, {registerMsg: ''});
     case REGISTER_SUCCESS:
       return merge(state, {
+        user: action.payload.user,
         token: action.payload.token,
         registerMsg: action.payload.msg,
         registerMsgType: 'success',
@@ -32,6 +37,9 @@ const reducer = (state = {}, action) => {
         registerMsg: action.payload,
         registerMsgType: 'error',
       });
+    case LOGOUT:
+      // console.log('reducer logout');
+      return merge(state, {token: undefined, user: undefined});
     default:
       return state;
   }

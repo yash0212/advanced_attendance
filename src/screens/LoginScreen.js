@@ -17,7 +17,6 @@ class LoginScreen extends PureComponent {
     if (this.props.token) {
       this.props.navigation.navigate('Home');
     }
-    console.log('login screen constructor props: ', this.props);
   }
   state = {
     email: '',

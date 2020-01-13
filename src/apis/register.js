@@ -1,4 +1,4 @@
-var uri = 'http://db566417.ngrok.io/api/register';
+var uri = 'http://dda8611f.ngrok.io/api/register';
 // var uri = 'http://localhost/api/register';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/register';
 export const register = async (
@@ -26,9 +26,10 @@ export const register = async (
   });
 
   if (response.ok) {
-    const {access_token} = await response.json();
+    const {access_token, user} = await response.json();
     return {
       token: access_token,
+      user: user,
       msg: 'Registered Successfully, Login to Continue',
     };
   }
