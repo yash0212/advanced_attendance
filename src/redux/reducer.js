@@ -38,7 +38,6 @@ const reducer = (state = {}, action) => {
         registerMsgType: 'error',
       });
     case LOGOUT:
-      // console.log('reducer logout');
       return merge(state, {token: undefined, user: undefined});
     default:
       return state;

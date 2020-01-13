@@ -85,6 +85,10 @@ class RegisterScreen extends PureComponent {
             returnKeyType="go"
             textContentType="emailAddress"
             autoCapitalize="none"
+            onSubmitEditing={() => {
+              this.nameInput.focus();
+            }}
+            blurOnSubmit={false}
           />
           <TextInput
             onChangeText={text => this.handleNameInput(text)}
@@ -92,7 +96,15 @@ class RegisterScreen extends PureComponent {
             style={styles.name}
             placeholder="Name"
             autoCompleteType="name"
+            autoCapitalize="words"
             returnKeyType="go"
+            ref={input => {
+              this.nameInput = input;
+            }}
+            onSubmitEditing={() => {
+              this.passwordInput.focus();
+            }}
+            blurOnSubmit={false}
           />
           <TextInput
             onChangeText={text => this.handlePasswordInput(text)}
@@ -103,6 +115,13 @@ class RegisterScreen extends PureComponent {
             returnKeyType="go"
             secureTextEntry={true}
             textContentType="password"
+            ref={input => {
+              this.passwordInput = input;
+            }}
+            onSubmitEditing={() => {
+              this.confirmPasswordInput.focus();
+            }}
+            blurOnSubmit={false}
           />
           <TextInput
             onChangeText={text => this.handleConfirmPasswordInput(text)}
@@ -112,6 +131,13 @@ class RegisterScreen extends PureComponent {
             returnKeyType="go"
             secureTextEntry={true}
             textContentType="password"
+            ref={input => {
+              this.confirmPasswordInput = input;
+            }}
+            onSubmitEditing={() => {
+              this.regnoInput.focus();
+            }}
+            blurOnSubmit={false}
           />
           <TextInput
             onChangeText={text => this.handleRegnoInput(text)}
@@ -120,6 +146,10 @@ class RegisterScreen extends PureComponent {
             placeholder="Registration Number"
             returnKeyType="done"
             autoCapitalize="characters"
+            maxLength={15}
+            ref={input => {
+              this.regnoInput = input;
+            }}
           />
           <TouchableOpacity
             style={styles.registerButton}
@@ -151,6 +181,7 @@ const styles = new StyleSheet.create({
     flex: 1,
     height: '100%',
     padding: 20,
+    backgroundColor: '#dadfe3',
     // justifyContent: 'center',
     // alignItems: 'center',
   },
@@ -171,7 +202,8 @@ const styles = new StyleSheet.create({
     marginBottom: 5,
   },
   email: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -179,7 +211,8 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   name: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -187,7 +220,8 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   password: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
@@ -195,7 +229,8 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
   },
   confirmPassword: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
     fontSize: 20,
     minWidth: '100%',
     paddingLeft: 10,
@@ -203,7 +238,8 @@ const styles = new StyleSheet.create({
     marginBottom: 10,
   },
   regno: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
     fontSize: 20,
     minWidth: '100%',
     paddingLeft: 10,
@@ -212,12 +248,14 @@ const styles = new StyleSheet.create({
   registerButton: {
     width: '100%',
     marginTop: 20,
-    backgroundColor: '#6bb9fb',
+    backgroundColor: '#444444',
     padding: 10,
   },
   registerButtonText: {
     textAlign: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
   loginContainer: {
     display: 'flex',
@@ -226,6 +264,7 @@ const styles = new StyleSheet.create({
   },
   alreadyAccountText: {
     fontSize: 14,
+    color: '#072b3e',
   },
   loginText: {
     fontSize: 14,

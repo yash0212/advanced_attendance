@@ -64,6 +64,10 @@ class LoginScreen extends PureComponent {
             returnKeyType="go"
             textContentType="emailAddress"
             autoCapitalize="none"
+            onSubmitEditing={() => {
+              this.passwordInput.focus();
+            }}
+            blurOnSubmit={false}
           />
           <TextInput
             onChangeText={text => this.handlePasswordInput(text)}
@@ -108,7 +112,7 @@ const styles = new StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    // backgroundColor: 'black',
+    backgroundColor: '#dadfe3',
   },
   loginFormContainer: {
     display: 'flex',
@@ -121,31 +125,35 @@ const styles = new StyleSheet.create({
     marginBottom: 5,
   },
   email: {
-    backgroundColor: 'lightgrey',
-    // backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     fontSize: 20,
     minWidth: '100%',
     marginBottom: 10,
     paddingLeft: 10,
     paddingRight: 10,
+    color: '#072b3e',
   },
   password: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#ffffff',
     // backgroundColor: 'white',
     fontSize: 20,
     minWidth: '100%',
     paddingLeft: 10,
     paddingRight: 10,
+    color: '#072b3e',
   },
   loginButton: {
     width: '100%',
     marginTop: 20,
-    backgroundColor: '#6bb9fb',
+    // backgroundColor: '#6bb9fb',
+    backgroundColor: '#444444',
     padding: 10,
   },
   loginButtonText: {
     textAlign: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
   registerContainer: {
     display: 'flex',
@@ -154,6 +162,7 @@ const styles = new StyleSheet.create({
   },
   noAccountText: {
     fontSize: 14,
+    color: '#072b3e',
   },
   registerText: {
     fontSize: 14,
