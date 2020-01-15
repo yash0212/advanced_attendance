@@ -10,7 +10,7 @@ import {
 import {connect} from 'react-redux';
 import {loginUser} from '../redux/actions';
 import Message from '../components/Message';
-
+import {getUniqueId} from 'react-native-device-info';
 class LoginScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -53,6 +53,7 @@ class LoginScreen extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={styles.loginFormContainer}>
+          <Text>{getUniqueId()}</Text>
           <Message msg={this.props.msg} msgType={this.props.msgType} />
           <TextInput
             onChangeText={text => this.handleEmailInput(text)}
@@ -173,7 +174,7 @@ const styles = new StyleSheet.create({
 const mapStateToProps = state => ({
   err: state.loginErr,
   token: state.token,
-  msg: state.registerMsgType === 'success' ? state.registerMsg : state.loginMsg,
+  msg: state.loginMsg,
   msgType: state.loginMsgType,
 });
 export default connect(mapStateToProps, {loginUser})(LoginScreen);

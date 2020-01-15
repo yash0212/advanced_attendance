@@ -1,6 +1,8 @@
 import {login} from '../apis/login';
 import {register} from '../apis/register';
 //Action Types
+export const RESET_MSG = 'RESET_MSG';
+
 export const LOG_IN_SENT = 'LOG_IN_SENT';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_REJECTED = 'LOG_IN_REJECTED';
@@ -31,6 +33,7 @@ export const registerUser = (
   regno,
   type = 1,
 ) => async dispatch => {
+  console.log('sending register request');
   dispatch({type: REGISTER_SENT});
   try {
     const data = await register(
@@ -45,4 +48,8 @@ export const registerUser = (
   } catch (err) {
     dispatch({type: REGISTER_REJECTED, payload: err.message});
   }
+};
+
+export const resetMsg = () => dispatch => {
+  dispatch({type: RESET_MSG});
 };

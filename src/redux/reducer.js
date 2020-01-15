@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {
+  RESET_MSG,
   LOG_IN_SUCCESS,
   LOG_IN_REJECTED,
   LOG_IN_SENT,
@@ -14,8 +15,15 @@ const merge = (a, b) => {
 };
 const reducer = (state = {}, action) => {
   switch (action.type) {
+    case RESET_MSG:
+      return merge(state, {
+        loginMsg: '',
+        loginMsgType: '',
+        registerMsg: '',
+        registerMsgType: '',
+      });
     case LOG_IN_SENT:
-      return merge(state, {loginMsg: ''});
+      return merge(state, {loginMsg: '', loginMsgType: ''});
     case LOG_IN_SUCCESS:
       return merge(state, {
         user: action.payload.user,
@@ -24,14 +32,22 @@ const reducer = (state = {}, action) => {
     case LOG_IN_REJECTED:
       return merge(state, {loginMsg: action.payload, loginMsgType: 'error'});
     case REGISTER_SENT:
-      return merge(state, {registerMsg: ''});
+      console.log('register sent dispatched');
+      return merge(state, {registerMsg: '', registerMsgType: ''});
     case REGISTER_SUCCESS:
-      return merge(state, {
-        user: action.payload.user,
-        token: action.payload.token,
-        registerMsg: action.payload.msg,
-        registerMsgType: 'success',
-      });
+      if (action.payload.user.user_type === 1) {
+        return merge(state, {
+          user: action.payload.user,
+          token: action.payload.token,
+          registerMsg: action.payload.msg,
+          registerMsgType: 'success',
+        });
+      } else {
+        return merge(state, {
+          registerMsg: action.payload.msg,
+          registerMsgType: 'success',
+        });
+      }
     case REGISTER_REJECTED:
       return merge(state, {
         registerMsg: action.payload,

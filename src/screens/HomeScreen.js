@@ -50,13 +50,21 @@ class HomeScreen extends PureComponent {
               You can view attendance for all the lectures
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('RegisterTeacher');
+            }}>
             <Text style={styles.tileTitle}>Create Teacher Account</Text>
             <Text style={styles.tileDescription}>
               Create a account for teacher's access
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('RegisterGuard');
+            }}>
             <Text style={styles.tileTitle}>Create Guard Account</Text>
             <Text style={styles.tileDescription}>
               Create a account for guard's access

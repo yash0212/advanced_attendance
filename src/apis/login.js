@@ -1,4 +1,4 @@
-var uri = 'http://0df27682.ngrok.io/api/login';
+var uri = 'http://81fdac62.ngrok.io/api/login';
 // var uri = 'http://localhost/api/login';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/login';
 export const login = async (email, password) => {

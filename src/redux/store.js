@@ -9,6 +9,13 @@ import reducer from './reducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: [
+    'navigation',
+    'registerMsg',
+    'registerMsgType',
+    'loginMsg',
+    'loginMsgType',
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

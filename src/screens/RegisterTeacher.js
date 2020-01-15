@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import {registerUser, resetMsg} from '../redux/actions';
 import Message from '../components/Message';
 
-class RegisterScreen extends PureComponent {
+class RegisterTeacher extends PureComponent {
   state = {
     email: '',
     name: '',
@@ -33,8 +33,8 @@ class RegisterScreen extends PureComponent {
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.msgType === 'success') {
-      ToastAndroid.show('Registered Successfully', ToastAndroid.SHORT);
-      this.props.navigation.navigate('Home');
+      ToastAndroid.show('Account Created Successfully', ToastAndroid.SHORT);
+      this.props.resetMsg();
     }
   }
   handleEmailInput(email) {
@@ -62,13 +62,14 @@ class RegisterScreen extends PureComponent {
       regno: regno,
     });
   }
-  _register = async () => {
+  _createAccount = async () => {
     this.props.registerUser(
       this.state.email,
       this.state.name,
       this.state.password,
       this.state.confirmPassword,
       this.state.regno,
+      2,
     );
   };
   render() {
@@ -135,40 +136,14 @@ class RegisterScreen extends PureComponent {
             ref={input => {
               this.confirmPasswordInput = input;
             }}
-            onSubmitEditing={() => {
-              this.regnoInput.focus();
-            }}
-            blurOnSubmit={false}
           />
-          <TextInput
-            onChangeText={text => this.handleRegnoInput(text)}
-            value={this.state.regno}
-            style={styles.regno}
-            placeholder="Registration Number"
-            returnKeyType="done"
-            autoCapitalize="characters"
-            maxLength={15}
-            ref={input => {
-              this.regnoInput = input;
-            }}
-          />
+
           <TouchableOpacity
-            style={styles.registerButton}
+            style={styles.createButton}
             onPress={() => {
-              this._register();
+              this._createAccount();
             }}>
-            <Text style={styles.registerButtonText}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.loginContainer}>
-          <Text style={styles.alreadyAccountText}>
-            Already have an account?
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('Login');
-            }}>
-            <Text style={styles.loginText}> Login Here</Text>
+            <Text style={styles.createButtonText}>Create Account</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -183,8 +158,6 @@ const styles = new StyleSheet.create({
     height: '100%',
     padding: 20,
     backgroundColor: '#dadfe3',
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   registerFormContainer: {
     display: 'flex',
@@ -238,38 +211,17 @@ const styles = new StyleSheet.create({
     paddingRight: 10,
     marginBottom: 10,
   },
-  regno: {
-    backgroundColor: '#ffffff',
-    color: '#072b3e',
-    fontSize: 20,
-    minWidth: '100%',
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  registerButton: {
+  createButton: {
     width: '100%',
     marginTop: 20,
     backgroundColor: '#444444',
     padding: 10,
   },
-  registerButtonText: {
+  createButtonText: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#ffffff',
-  },
-  loginContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  alreadyAccountText: {
-    fontSize: 14,
-    color: '#072b3e',
-  },
-  loginText: {
-    fontSize: 14,
-    color: 'blue',
   },
 });
 
@@ -280,5 +232,5 @@ const mapStateToProps = state => ({
   token: state.token,
 });
 export default connect(mapStateToProps, {registerUser, resetMsg})(
-  RegisterScreen,
+  RegisterTeacher,
 );
