@@ -11,12 +11,27 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import RegisterGuard from './src/screens/RegisterGuard';
 import RegisterTeacher from './src/screens/RegisterTeacher';
+import StudentScanAttendance from './src/screens/StudentScanAttendance';
+import GuardScanAttendance from './src/screens/GuardScanAttendance';
+import StudentAttendance from './src/screens/StudentAttendance';
+import ApplyOutingRequest from './src/screens/ApplyOutingRequest';
+import AdminOutingRequests from './src/screens/AdminOutingRequests';
+import AdminAttendance from './src/screens/AdminAttendance';
+import TeacherCreateAttendance from './src/screens/TeacherCreateAttendance';
 
 const HomeStackNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
       navigationOptions: {headerShown: false},
+    },
+    AdminOutingRequests: {
+      screen: AdminOutingRequests,
+      navigationOptions: {title: 'Leave/Outing Requests'},
+    },
+    AdminAttendance: {
+      screen: AdminAttendance,
+      navigationOptions: {title: 'Admin View Attendance'},
     },
     RegisterGuard: {
       screen: RegisterGuard,
@@ -25,6 +40,26 @@ const HomeStackNavigator = createStackNavigator(
     RegisterTeacher: {
       screen: RegisterTeacher,
       navigationOptions: {title: 'Create Teacher Account'},
+    },
+    StudentScanAttendance: {
+      screen: StudentScanAttendance,
+      navigationOptions: {title: 'Scan Attendance Code'},
+    },
+    StudentAttendance: {
+      screen: StudentAttendance,
+      navigationOptions: {title: 'Student View Attendance'},
+    },
+    ApplyOutingRequest: {
+      screen: ApplyOutingRequest,
+      navigationOptions: {title: 'Apply Leave/Outing'},
+    },
+    TeacherCreateAttendance: {
+      screen: TeacherCreateAttendance,
+      navigationOptions: {title: 'Create Attendance Code'},
+    },
+    GuardScanAttendance: {
+      screen: GuardScanAttendance,
+      navigationOptions: {title: "Scan Student's Code"},
     },
   },
   {initialRouteName: 'Home'},

@@ -1,0 +1,20 @@
+import React, {PureComponent} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+
+class AdminAttendance extends PureComponent {
+  render() {
+    return <View style={styles.container}></View>;
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#dadfe3',
+    alignItems: 'center',
+  },
+});
+
+export default AdminAttendance;

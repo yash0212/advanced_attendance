@@ -1,4 +1,6 @@
-var uri = 'http://81fdac62.ngrok.io/api/register';
+var endpoint = 'http://81fdac62.ngrok.io';
+var path = '/api/register';
+var uri = endpoint + path;
 // var uri = 'http://localhost/api/register';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/register';
 export const register = async (

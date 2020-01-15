@@ -38,13 +38,21 @@ class HomeScreen extends PureComponent {
       return (
         <View style={styles.container}>
           {this.renderTitle()}
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('AdminOutingRequests');
+            }}>
             <Text style={styles.tileTitle}>Show Leave/Outing Requests</Text>
             <Text style={styles.tileDescription}>
               You can approve or reject the student leave/outing requests
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('AdminAttendance');
+            }}>
             <Text style={styles.tileTitle}>View Attendance</Text>
             <Text style={styles.tileDescription}>
               You can view attendance for all the lectures
@@ -77,20 +85,32 @@ class HomeScreen extends PureComponent {
       return (
         <View style={styles.container}>
           {this.renderTitle()}
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('StudentScanAttendance');
+            }}>
             <Text style={styles.tileTitle}>Scan Attendance Code</Text>
             <Text style={styles.tileDescription}>
               You can mark attendance for your lectures
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('ApplyOutingRequest');
+            }}>
             <Text style={styles.tileTitle}>Apply For Leave/Outing</Text>
             <Text style={styles.tileDescription}>
               You can apply for leave or outing pass for going out of college
               campus
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('StudentAttendance');
+            }}>
             <Text style={styles.tileTitle}>View Attendance</Text>
             <Text style={styles.tileDescription}>
               Check your attendance and statistics
@@ -103,7 +123,11 @@ class HomeScreen extends PureComponent {
       return (
         <View style={styles.container}>
           {this.renderTitle()}
-          <TouchableOpacity style={styles.tile}>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('TeacherCreateAttendance');
+            }}>
             <Text style={styles.tileTitle}>Generate Attendance Code</Text>
             <Text style={styles.tileDescription}>
               Create a attendance code which can be scanned by students for
@@ -118,7 +142,13 @@ class HomeScreen extends PureComponent {
         <View style={styles.container}>
           {this.renderTitle()}
           <TouchableOpacity style={styles.tile}>
-            <Text style={styles.tileTitle}>Verify Leave/Outing</Text>
+            <Text
+              style={styles.tileTitle}
+              onPress={() => {
+                this.props.navigation.navigate('GuardScanAttendance');
+              }}>
+              Verify Leave/Outing
+            </Text>
             <Text style={styles.tileDescription}>
               Scan the student's code and verify if he/she is permitted to leave
               the college campus
@@ -162,10 +192,8 @@ const styles = new StyleSheet.create({
   tile: {
     margin: 10,
     backgroundColor: 'white',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 15,
-    paddingLeft: 15,
+    padding: 10,
+    paddingHorizontal: 15,
     borderRadius: 10,
   },
   tileTitle: {
