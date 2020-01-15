@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 // import {TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
-import {registerUser, resetMsg} from '../redux/actions';
-import Message from '../components/Message';
+import {registerUser, resetMsg} from '../../redux/actions';
+import Message from '../../components/Message';
 
-class RegisterGuard extends PureComponent {
+class RegisterTeacher extends PureComponent {
   state = {
     email: '',
     name: '',
@@ -69,7 +69,7 @@ class RegisterGuard extends PureComponent {
       this.state.password,
       this.state.confirmPassword,
       this.state.regno,
-      3,
+      2,
     );
   };
   render() {
@@ -232,5 +232,5 @@ const mapStateToProps = state => ({
   token: state.token,
 });
 export default connect(mapStateToProps, {registerUser, resetMsg})(
-  RegisterGuard,
+  RegisterTeacher,
 );

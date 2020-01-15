@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-class TeacherCreateAttendance extends PureComponent {
+class ViewAttendance extends PureComponent {
   render() {
     return <View style={styles.container}></View>;
   }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TeacherCreateAttendance;
+export default ViewAttendance;

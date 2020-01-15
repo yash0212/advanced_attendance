@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
-class GuardScanAttendance extends PureComponent {
+class ScanCode extends PureComponent {
   state = {
     flashEnabled: 0,
   };
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuardScanAttendance;
+export default ScanCode;

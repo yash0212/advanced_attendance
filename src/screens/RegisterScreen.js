@@ -183,24 +183,12 @@ const styles = new StyleSheet.create({
     height: '100%',
     padding: 20,
     backgroundColor: '#dadfe3',
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   registerFormContainer: {
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  error: {
-    backgroundColor: 'red',
-    color: 'red',
-    marginBottom: 5,
-  },
-  success: {
-    backgroundColor: 'green',
-    color: 'green',
-    marginBottom: 5,
   },
   email: {
     backgroundColor: '#ffffff',
