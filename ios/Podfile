@@ -36,7 +36,7 @@ target 'advanced_attendance' do
 
   pod 'ReactNativeNavigation', :path => '../node_modules/react-native-navigation'
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 
   target 'advanced_attendanceTests' do
     inherit! :search_paths
