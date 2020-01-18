@@ -1,9 +1,9 @@
-var endpoint = 'http://ab299d35.ngrok.io';
-var path = '/api/login';
+var endpoint = 'http://2c09921f.ngrok.io';
+var path = '/api/apply-outing';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/login';
-export const login = async (email, password) => {
+export const applyLeave = async (email, password) => {
   const response = await fetch(uri, {
     method: 'POST',
     headers: {accept: 'application/json', 'content-type': 'application/json'},

@@ -5,6 +5,7 @@ import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import reducer from './reducer';
+import ViewOutingRequests from '../screens/Student/ViewOutingRequests';
 
 const persistConfig = {
   key: 'root',

@@ -10,6 +10,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
 //Admin Screens
 import RegisterGuard from './src/screens/Admin/RegisterGuard';
 import RegisterTeacher from './src/screens/Admin/RegisterTeacher';
@@ -17,16 +18,18 @@ import AdminOutingRequests from './src/screens/Admin/ViewOutingRequests';
 import AdminLeaveRequests from './src/screens/Admin/ViewLeaveRequests';
 import AdminAttendance from './src/screens/Admin/ViewAttendance';
 //Stduent Screens
-import StudentAttendance from './src/screens/Student/ViewAttendance';
+import StudentScanAttendance from './src/screens/Student/ScanAttendance';
 import ApplyOutingRequest from './src/screens/Student/ApplyOutingRequest';
 import ApplyLeaveRequest from './src/screens/Student/ApplyLeaveRequest';
-import StudentScanAttendance from './src/screens/Student/ScanAttendance';
+import StudentAttendance from './src/screens/Student/ViewAttendance';
+import StudentViewLeaveRequests from './src/screens/Student/ViewLeaveRequests';
+import StudentViewOutingRequests from './src/screens/Student/ViewOutingRequests';
 //Teacher Screens
 import TeacherCreateAttendance from './src/screens/Teacher/CreateAttendance';
 //Guard Screens
 import GuardScanAttendance from './src/screens/Guard/ScanCode';
 
-const studentLeaveOutingNavigator = createBottomTabNavigator(
+const studentApplyLeaveOutingNavigator = createBottomTabNavigator(
   {
     ApplyOutingRequest: {
       screen: ApplyOutingRequest,
@@ -39,6 +42,35 @@ const studentLeaveOutingNavigator = createBottomTabNavigator(
   },
   {
     initialRouteName: 'ApplyOutingRequest',
+    tabBarOptions: {
+      activeTintColor: '#ff475d',
+      activeBackgroundColor: '#ffffff',
+      // inactiveTintColor: '#ffffff',
+      inactiveBackgroundColor: '#dadfe3',
+      tabStyle: {
+        justifyContent: 'center',
+      },
+      showIcon: false,
+      labelStyle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+      },
+    },
+  },
+);
+const studentViewLeaveOutingNavigator = createBottomTabNavigator(
+  {
+    ViewOutingRequests: {
+      screen: StudentViewOutingRequests,
+      navigationOptions: {title: 'Outing'},
+    },
+    ViewLeaveRequests: {
+      screen: StudentViewLeaveRequests,
+      navigationOptions: {title: 'Leave'},
+    },
+  },
+  {
+    initialRouteName: 'ViewOutingRequests',
     tabBarOptions: {
       activeTintColor: '#ff475d',
       activeBackgroundColor: '#ffffff',
@@ -95,13 +127,17 @@ const HomeStackNavigator = createStackNavigator(
       screen: StudentScanAttendance,
       navigationOptions: {title: 'Scan Attendance Code'},
     },
+    ApplyOutingRequest: {
+      screen: studentApplyLeaveOutingNavigator,
+      navigationOptions: {title: 'Apply for Leave/Outing'},
+    },
     StudentAttendance: {
       screen: StudentAttendance,
       navigationOptions: {title: 'Student View Attendance'},
     },
-    ApplyOutingRequest: {
-      screen: studentLeaveOutingNavigator,
-      navigationOptions: {title: 'Apply for Leave/Outing'},
+    StudentViewLeaveOutingRequests: {
+      screen: studentViewLeaveOutingNavigator,
+      navigationOptions: {title: 'Leave/Outing Requests'},
     },
     TeacherCreateAttendance: {
       screen: TeacherCreateAttendance,
@@ -131,7 +167,7 @@ export default class App extends React.Component {
   render() {
     return (
       <StoreProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
           <PaperProvider>
             <Navigation />
           </PaperProvider>

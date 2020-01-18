@@ -8,6 +8,12 @@ import {
   REGISTER_REJECTED,
   REGISTER_SENT,
   LOGOUT,
+  FETCH_OUTING_SENT,
+  FETCH_OUTING_SUCCESS,
+  FETCH_OUTING_REJECTED,
+  FETCH_LEAVE_SENT,
+  FETCH_LEAVE_SUCCESS,
+  FETCH_LEAVE_REJECTED,
 } from './actions';
 
 const merge = (a, b) => {
@@ -21,6 +27,7 @@ const reducer = (state = {}, action) => {
         loginMsgType: '',
         registerMsg: '',
         registerMsgType: '',
+        outingErr: '',
       });
     case LOG_IN_SENT:
       return merge(state, {loginMsg: '', loginMsgType: ''});
@@ -55,9 +62,35 @@ const reducer = (state = {}, action) => {
       });
     case LOGOUT:
       return merge(state, {token: undefined, user: undefined});
+    case FETCH_OUTING_SENT:
+      return merge(state, {
+        loading: true,
+        outingErr: '',
+      });
+    case FETCH_OUTING_SUCCESS:
+      return merge(state, {
+        outingErr: '',
+        outingRequests: action.payload,
+        loading: false,
+      });
+    case FETCH_OUTING_REJECTED:
+      return merge(state, {outingErr: action.payload, loading: false});
+    case FETCH_LEAVE_SENT:
+      return merge(state, {
+        loading: true,
+        leaveErr: '',
+      });
+    case FETCH_LEAVE_SUCCESS:
+      return merge(state, {
+        leaveErr: '',
+        leaveRequests: action.payload,
+        loading: false,
+      });
+    case FETCH_LEAVE_REJECTED:
+      return merge(state, {leaveErr: action.payload, loading: false});
     default:
       return state;
   }
 };
-// const reducer = combineReducers({loginReducer});
+// const reducer = combineReducers({authReducer, leaveOutingReducer});
 export default reducer;

@@ -1,21 +1,25 @@
 var endpoint = 'http://ab299d35.ngrok.io';
-var path = '/api/login';
+var path = '/api/fetch-outing';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';
 // var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/login';
-export const login = async (email, password) => {
+export const fetchOuting = async (token, start = 0, length = 15) => {
   const response = await fetch(uri, {
-    method: 'POST',
-    headers: {accept: 'application/json', 'content-type': 'application/json'},
-    body: JSON.stringify({email: email, password: password}),
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
   });
 
   if (response.ok) {
-    const {message, access_token, user} = await response.json();
-    if (message !== undefined) {
-      throw new Error(message);
+    // console.log(await response.json());
+    const {status, data} = await response.json();
+    if (status === 'success') {
+      return data;
     }
-    return {token: access_token, user: user};
+    // throw new Error(message);
   }
   if ((response.status = 400)) {
     var parsedBody = JSON.parse(await response.text());

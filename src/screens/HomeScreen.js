@@ -109,6 +109,17 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
+              this.props.navigation.navigate('StudentViewLeaveOutingRequests');
+            }}>
+            <Text style={styles.tileTitle}>View Leave/Outing Requests</Text>
+            <Text style={styles.tileDescription}>
+              You can view your leave or outing requests and pass for going out
+              of college campus
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
               this.props.navigation.navigate('StudentAttendance');
             }}>
             <Text style={styles.tileTitle}>View Attendance</Text>
