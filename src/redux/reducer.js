@@ -14,6 +14,9 @@ import {
   FETCH_LEAVE_SENT,
   FETCH_LEAVE_SUCCESS,
   FETCH_LEAVE_REJECTED,
+  UPDATE_OUTING_SENT,
+  UPDATE_OUTING_SUCCESS,
+  UPDATE_OUTING_REJECTED,
 } from './actions';
 
 const merge = (a, b) => {
@@ -28,6 +31,8 @@ const reducer = (state = {}, action) => {
         registerMsg: '',
         registerMsgType: '',
         outingErr: '',
+        updateOutingMsg: '',
+        updateOutingMsgType: '',
       });
     case LOG_IN_SENT:
       return merge(state, {loginMsg: '', loginMsgType: ''});
@@ -88,6 +93,19 @@ const reducer = (state = {}, action) => {
       });
     case FETCH_LEAVE_REJECTED:
       return merge(state, {leaveErr: action.payload, loading: false});
+    case UPDATE_OUTING_SENT:
+      return merge(state, {updateOutingMsg: '', updateOutingMsgType: ''});
+    case UPDATE_OUTING_SUCCESS:
+      return merge(state, {
+        updateOutingMsgType: action.payload.updateOutingMsgType,
+        updateOutingMsg: action.payload.msg,
+        outingRequests: action.payload.outingRequests,
+      });
+    case UPDATE_OUTING_REJECTED:
+      return merge(state, {
+        updateOutingMsgType: 'error',
+        updateOutingMsg: action.payload,
+      });
     default:
       return state;
   }
