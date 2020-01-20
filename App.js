@@ -17,6 +17,7 @@ import RegisterTeacher from './src/screens/Admin/RegisterTeacher';
 import AdminOutingRequests from './src/screens/Admin/ViewOutingRequests';
 import AdminLeaveRequests from './src/screens/Admin/ViewLeaveRequests';
 import AdminAttendance from './src/screens/Admin/ViewAttendance';
+import UpdateLeaveOutingRequest from './src/screens/Admin/UpdateLeaveOutingRequest';
 //Stduent Screens
 import StudentScanAttendance from './src/screens/Student/ScanAttendance';
 import ApplyOutingRequest from './src/screens/Student/ApplyOutingRequest';
@@ -88,18 +89,56 @@ const studentViewLeaveOutingNavigator = createBottomTabNavigator(
   },
 );
 
-// const adminLeaveOutingNavigator = createBottomTabNavigator(
-//   {
-//     ApplyOutingRequest: {
-//       screen: AdminOutingRequests,
-//       navigationOptions: {title: 'Apply for Outing'},
-//     },
-//     ApplyLeaveRequest: {screen: AdminLeaveRequests, title: 'Apply for Leave'},
-//   },
-//   {
-//     initialRouteName: 'ApplyOutingRequest',
-//   },
-// );
+//Admin update outing stack navigator
+const adminUpdateOutingNavigator = createStackNavigator(
+  {
+    ViewOutingRequests: {
+      screen: AdminOutingRequests,
+      navigationOptions: {headerShown: false},
+    },
+    UpdateLeaveOutingRequest: {
+      screen: UpdateLeaveOutingRequest,
+      navigationOptions: {
+        title: 'Update Outing Request',
+      },
+    },
+  },
+  {
+    initialRouteName: 'ViewOutingRequests',
+    headerShown: false,
+  },
+);
+
+//Admin Bottom Tab navigator
+const adminViewLeaveOutingNavigator = createBottomTabNavigator(
+  {
+    ViewOutingRequests: {
+      screen: adminUpdateOutingNavigator,
+      navigationOptions: {title: 'Outing'},
+    },
+    ViewLeaveRequests: {
+      screen: AdminLeaveRequests,
+      navigationOptions: {title: 'Leave'},
+    },
+  },
+  {
+    initialRouteName: 'ViewOutingRequests',
+    tabBarOptions: {
+      activeTintColor: '#ff475d',
+      activeBackgroundColor: '#ffffff',
+      // inactiveTintColor: '#ffffff',
+      inactiveBackgroundColor: '#dadfe3',
+      tabStyle: {
+        justifyContent: 'center',
+      },
+      showIcon: false,
+      labelStyle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+      },
+    },
+  },
+);
 
 const HomeStackNavigator = createStackNavigator(
   {
@@ -108,7 +147,7 @@ const HomeStackNavigator = createStackNavigator(
       navigationOptions: {headerShown: false},
     },
     AdminOutingRequests: {
-      screen: AdminOutingRequests,
+      screen: adminViewLeaveOutingNavigator,
       navigationOptions: {title: 'Leave/Outing Requests'},
     },
     AdminAttendance: {

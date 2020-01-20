@@ -1,4 +1,4 @@
-var endpoint = 'http://2c09921f.ngrok.io';
+var endpoint = 'http://a6ae03da.ngrok.io';
 var path = '/api/register';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/register';

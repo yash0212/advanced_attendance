@@ -1,4 +1,4 @@
-var endpoint = 'http://2c09921f.ngrok.io';
+var endpoint = 'http://6a2fcf59.ngrok.io';
 var path = '/api/apply-outing';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';

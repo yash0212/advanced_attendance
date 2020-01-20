@@ -69,7 +69,7 @@ export const fetchOutingRequests = token => async dispatch => {
   dispatch({type: FETCH_OUTING_SENT});
   try {
     const data = await fetchOuting(token);
-    console.log('data is received from server', data);
+    // console.log('data is received from server', data);
     dispatch({type: FETCH_OUTING_SUCCESS, payload: data});
   } catch (err) {
     dispatch({type: FETCH_OUTING_REJECTED, payload: err.message});
@@ -81,7 +81,7 @@ export const fetchLeaveRequests = token => async dispatch => {
   dispatch({type: FETCH_LEAVE_SENT});
   try {
     const data = await fetchLeave(token);
-    console.log('data is received from server', data);
+    // console.log('data is received from server', data);
     dispatch({type: FETCH_LEAVE_SUCCESS, payload: data});
   } catch (err) {
     dispatch({type: FETCH_LEAVE_REJECTED, payload: err.message});

@@ -1,4 +1,4 @@
-var endpoint = 'http://ab299d35.ngrok.io';
+var endpoint = 'http://6a2fcf59.ngrok.io';
 var path = '/api/fetch-leave';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';
