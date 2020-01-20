@@ -17,6 +17,9 @@ import {
   UPDATE_OUTING_SENT,
   UPDATE_OUTING_SUCCESS,
   UPDATE_OUTING_REJECTED,
+  UPDATE_LEAVE_SENT,
+  UPDATE_LEAVE_SUCCESS,
+  UPDATE_LEAVE_REJECTED,
 } from './actions';
 
 const merge = (a, b) => {
@@ -105,6 +108,19 @@ const reducer = (state = {}, action) => {
       return merge(state, {
         updateOutingMsgType: 'error',
         updateOutingMsg: action.payload,
+      });
+    case UPDATE_LEAVE_SENT:
+      return merge(state, {updateLeaveMsg: '', updateLeaveMsgType: ''});
+    case UPDATE_LEAVE_SUCCESS:
+      return merge(state, {
+        updateLeaveMsgType: action.payload.updateLeaveMsgType,
+        updateLeaveMsg: action.payload.msg,
+        leaveRequests: action.payload.leaveRequests,
+      });
+    case UPDATE_LEAVE_REJECTED:
+      return merge(state, {
+        updateLeaveMsgType: 'error',
+        updateLeaveMsg: action.payload,
       });
     default:
       return state;

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   RefreshControl,
   FlatList,
-  ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {
