@@ -23,6 +23,9 @@ import {
   APPLY_LEAVE_SENT,
   APPLY_LEAVE_SUCCESS,
   APPLY_LEAVE_REJECTED,
+  APPLY_OUTING_SENT,
+  APPLY_OUTING_SUCCESS,
+  APPLY_OUTING_REJECTED,
 } from './actions';
 
 const merge = (a, b) => {
@@ -42,6 +45,7 @@ const reducer = (state = {}, action) => {
         updateLeaveMsg: '',
         updateLeaveMsgType: '',
         applyLeaveMsg: '',
+        applyOutingMsg: '',
       });
     case LOG_IN_SENT:
       return merge(state, {loginMsg: '', loginMsgType: ''});
@@ -138,6 +142,18 @@ const reducer = (state = {}, action) => {
     case APPLY_LEAVE_REJECTED:
       return merge(state, {
         applyLeaveMsg: action.payload,
+        loading: false,
+      });
+    case APPLY_OUTING_SENT:
+      return merge(state, {applyOutingMsg: '', loading: true});
+    case APPLY_OUTING_SUCCESS:
+      return merge(state, {
+        applyOutingMsg: action.payload.msg,
+        loading: false,
+      });
+    case APPLY_OUTING_REJECTED:
+      return merge(state, {
+        applyOutingMsg: action.payload,
         loading: false,
       });
     default:

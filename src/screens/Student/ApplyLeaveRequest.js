@@ -32,16 +32,6 @@ class ApplyLeaveRequest extends PureComponent {
     } else {
       return null;
     }
-    //   console.log('props', props.loading);
-    //   if (props.loading) {
-    //     return null;
-    //   } else if (props.applyLeaveMsg) {
-    //     return {
-    //       loading: false,
-    //     };
-    //   } else {
-    //     return null;
-    //   }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -104,7 +94,7 @@ class ApplyLeaveRequest extends PureComponent {
         text: 'The visit to field is required.',
         duration: Snackbar.LENGTH_SHORT,
       });
-    } else if (this.state.visitTo === '') {
+    } else if (this.state.reason === '') {
       Snackbar.show({
         text: 'The reason field is required.',
         duration: Snackbar.LENGTH_SHORT,
