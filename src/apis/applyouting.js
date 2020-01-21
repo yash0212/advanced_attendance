@@ -17,7 +17,7 @@ export const applyLeave = async (email, password) => {
     }
     return {token: access_token, user: user};
   }
-  if ((response.status = 400)) {
+  if (response.status === 400) {
     var parsedBody = JSON.parse(await response.text());
     const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
     throw new Error(errMessage);

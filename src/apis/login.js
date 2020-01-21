@@ -1,4 +1,4 @@
-var endpoint = 'http://6a2fcf59.ngrok.io';
+var endpoint = 'http://7a1d81b0.ngrok.io';
 var path = '/api/login';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';
@@ -17,7 +17,7 @@ export const login = async (email, password) => {
     }
     return {token: access_token, user: user};
   }
-  if ((response.status = 400)) {
+  if (response.status === 400) {
     var parsedBody = JSON.parse(await response.text());
     const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
     throw new Error(errMessage);

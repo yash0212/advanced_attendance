@@ -4,7 +4,7 @@ import {fetchOuting} from '../apis/fetchouting';
 import {fetchLeave} from '../apis/fetchleave';
 import {updateOuting} from '../apis/updateouting';
 import {updateLeave} from '../apis/updateleave';
-
+import {applyLeave} from '../apis/applyleave';
 //Action Types
 export const RESET_MSG = 'RESET_MSG';
 
@@ -31,6 +31,10 @@ export const UPDATE_OUTING_REJECTED = 'UPDATE_OUTING_REJECTED';
 export const UPDATE_LEAVE_SENT = 'UPDATE_LEAVE_SENT';
 export const UPDATE_LEAVE_SUCCESS = 'UPDATE_LEAVE_SUCCESS';
 export const UPDATE_LEAVE_REJECTED = 'UPDATE_LEAVE_REJECTED';
+
+export const APPLY_LEAVE_SENT = 'APPLY_LEAVE_SENT';
+export const APPLY_LEAVE_SUCCESS = 'APPLY_LEAVE_SUCCESS';
+export const APPLY_LEAVE_REJECTED = 'APPLY_LEAVE_REJECTED';
 //Action Creators
 export const loginUser = (regno, password) => async dispatch => {
   // console.log('Login Fired');
@@ -124,5 +128,22 @@ export const updateLeaveRequest = (
     dispatch({type: UPDATE_LEAVE_SUCCESS, payload: data});
   } catch (err) {
     dispatch({type: UPDATE_LEAVE_REJECTED, payload: err.message});
+  }
+};
+
+export const applyLeaveRequest = (
+  token,
+  visitTo,
+  reason,
+  outDate,
+  inDate,
+) => async dispatch => {
+  console.log('sending apply leave request');
+  dispatch({type: APPLY_LEAVE_SENT});
+  try {
+    const data = await applyLeave(token, visitTo, reason, outDate, inDate);
+    dispatch({type: APPLY_LEAVE_SUCCESS, payload: data});
+  } catch (err) {
+    dispatch({type: APPLY_LEAVE_REJECTED, payload: err.message});
   }
 };

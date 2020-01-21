@@ -5,12 +5,18 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Message from '../../components/Message';
+import {connect} from 'react-redux';
+import {applyLeaveRequest, resetMsg} from '../../redux/actions';
+import Snackbar from 'react-native-snackbar';
 
 class ApplyLeaveRequest extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.props.resetMsg();
+  }
   state = {
     visitTo: '',
     reason: '',
@@ -18,7 +24,40 @@ class ApplyLeaveRequest extends PureComponent {
     outDate: new Date(),
     showInDate: false,
     showOutDate: false,
+    loading: false,
   };
+  static getDerivedStateFromProps(props, state) {
+    if (typeof props.loading === 'boolean') {
+      return {loading: props.loading};
+    } else {
+      return null;
+    }
+    //   console.log('props', props.loading);
+    //   if (props.loading) {
+    //     return null;
+    //   } else if (props.applyLeaveMsg) {
+    //     return {
+    //       loading: false,
+    //     };
+    //   } else {
+    //     return null;
+    //   }
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.applyLeaveMsg !== '' &&
+      prevProps.applyLeaveMsg === this.props.applyLeaveMsg
+    ) {
+      this.props.resetMsg();
+    } else if (this.props.applyLeaveMsg !== '') {
+      Snackbar.show({
+        text: this.props.applyLeaveMsg,
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      // console.log('here');
+    }
+  }
   handleReasonInput = reason => {
     this.setState({
       reason: reason,
@@ -60,7 +99,36 @@ class ApplyLeaveRequest extends PureComponent {
     ].join('');
   };
   _apply() {
-    ToastAndroid.show('Applied Successfully', ToastAndroid.SHORT);
+    if (this.state.visitTo === '') {
+      Snackbar.show({
+        text: 'The visit to field is required.',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (this.state.visitTo === '') {
+      Snackbar.show({
+        text: 'The reason field is required.',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (this.state.inDate.getTime() === this.state.outDate.getTime()) {
+      Snackbar.show({
+        text: 'The out date and in date cannot be same.',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      this.props.applyLeaveRequest(
+        this.props.token,
+        this.state.visitTo,
+        this.state.reason,
+        this.state.outDate,
+        this.state.inDate,
+      );
+      this.setState({
+        inDate: new Date(),
+        outDate: new Date(),
+        visitTo: '',
+        reason: '',
+      });
+    }
   }
   render() {
     const {inDate, showInDate, outDate, showOutDate} = this.state;
@@ -130,7 +198,8 @@ class ApplyLeaveRequest extends PureComponent {
             style={styles.applyButton}
             onPress={() => {
               this._apply();
-            }}>
+            }}
+            disabled={this.state.loading}>
             <Text style={styles.applyButtonText}>Apply</Text>
           </TouchableOpacity>
         </View>
@@ -203,4 +272,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ApplyLeaveRequest;
+const mapStateToProps = state => ({
+  err: state.leaveErr,
+  leaveRequests: state.leaveRequests,
+  token: state.token,
+  loading: state.loading,
+  applyLeaveMsg: state.applyLeaveMsg,
+});
+export default connect(mapStateToProps, {applyLeaveRequest, resetMsg})(
+  ApplyLeaveRequest,
+);

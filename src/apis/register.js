@@ -1,4 +1,4 @@
-var endpoint = 'http://a6ae03da.ngrok.io';
+var endpoint = 'http://7a1d81b0.ngrok.io';
 var path = '/api/register';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/register';
@@ -35,7 +35,7 @@ export const register = async (
       msg: 'Registered Successfully, Login to Continue',
     };
   }
-  if ((response.status = 400)) {
+  if (response.status === 400) {
     var parsedBody = JSON.parse(await response.text());
     const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
     // const errMessage = parsedBody.message;

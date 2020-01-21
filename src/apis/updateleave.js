@@ -1,4 +1,4 @@
-var endpoint = 'http://6a2fcf59.ngrok.io';
+var endpoint = 'http://7a1d81b0.ngrok.io';
 var path = '/api/update-leave';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/register';
@@ -29,7 +29,7 @@ export const updateLeave = async (token, leave_id, requestStatus = 0) => {
       throw new Error(msg);
     }
   }
-  if ((response.status = 400)) {
+  if (response.status === 400) {
     var parsedBody = JSON.parse(await response.text());
     // console.log(parsedBody);
     // const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];

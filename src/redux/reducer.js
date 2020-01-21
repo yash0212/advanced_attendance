@@ -20,6 +20,9 @@ import {
   UPDATE_LEAVE_SENT,
   UPDATE_LEAVE_SUCCESS,
   UPDATE_LEAVE_REJECTED,
+  APPLY_LEAVE_SENT,
+  APPLY_LEAVE_SUCCESS,
+  APPLY_LEAVE_REJECTED,
 } from './actions';
 
 const merge = (a, b) => {
@@ -36,6 +39,9 @@ const reducer = (state = {}, action) => {
         outingErr: '',
         updateOutingMsg: '',
         updateOutingMsgType: '',
+        updateLeaveMsg: '',
+        updateLeaveMsgType: '',
+        applyLeaveMsg: '',
       });
     case LOG_IN_SENT:
       return merge(state, {loginMsg: '', loginMsgType: ''});
@@ -121,6 +127,18 @@ const reducer = (state = {}, action) => {
       return merge(state, {
         updateLeaveMsgType: 'error',
         updateLeaveMsg: action.payload,
+      });
+    case APPLY_LEAVE_SENT:
+      return merge(state, {applyLeaveMsg: '', loading: true});
+    case APPLY_LEAVE_SUCCESS:
+      return merge(state, {
+        applyLeaveMsg: action.payload.msg,
+        loading: false,
+      });
+    case APPLY_LEAVE_REJECTED:
+      return merge(state, {
+        applyLeaveMsg: action.payload,
+        loading: false,
       });
     default:
       return state;
