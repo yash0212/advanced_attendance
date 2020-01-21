@@ -22,7 +22,7 @@ export const fetchLeave = async (token, start = 0, length = 15) => {
     }
     // throw new Error(message);
   }
-  if (response.status === 400) {
+  if (response.status === 400 || response.status === 422) {
     var parsedBody = JSON.parse(await response.text());
     const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
     throw new Error(errMessage);

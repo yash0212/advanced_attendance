@@ -36,7 +36,7 @@ export const register = async (
       msg: 'Registered Successfully, Login to Continue',
     };
   }
-  if (response.status === 400) {
+  if (response.status === 400 || response.status === 422) {
     var parsedBody = JSON.parse(await response.text());
     const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
     // const errMessage = parsedBody.message;
