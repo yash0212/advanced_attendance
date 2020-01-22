@@ -35,6 +35,7 @@ class DisplayCode extends PureComponent {
   }
   renderCode() {
     let code = this.state.code;
+    // console.log('code', code);
     var arr = [];
     var res;
     for (let i = 0; i < 10; i++) {

@@ -1,4 +1,4 @@
-var endpoint = 'http://d950b57d.ngrok.io';
+var endpoint = 'http://c2a398f9.ngrok.io';
 // var endpoint = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com';
 var path = '/api/apply-leave';
 var uri = endpoint + path;

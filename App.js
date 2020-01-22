@@ -2,7 +2,7 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {store, persistor} from './src/redux/store';
 import {Provider as StoreProvider} from 'react-redux';
-import {Provider as PaperProvider} from 'react-native-paper';
+// import {Provider as PaperProvider} from 'react-native-paper';
 import React from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -27,6 +27,7 @@ import StudentViewOutingRequests from './src/screens/Student/ViewOutingRequests'
 import StudentDisplayCode from './src/screens/Student/DisplayCode';
 //Teacher Screens
 import TeacherCreateAttendance from './src/screens/Teacher/CreateAttendance';
+import TeacherDisplayCode from './src/screens/Teacher/DisplayCode';
 //Guard Screens
 import GuardScanAttendance from './src/screens/Guard/ScanCode';
 
@@ -148,6 +149,18 @@ const adminViewLeaveOutingNavigator = createBottomTabNavigator(
   },
 );
 
+//Teacher Code generator stack navigator
+const teacherGenerateCodeNavigator = createStackNavigator(
+  {
+    TeacherCreateAttendance: {
+      screen: TeacherCreateAttendance,
+    },
+    TeacherDisplayCode: {
+      screen: TeacherDisplayCode,
+    },
+  },
+  {initialRouteName: 'TeacherCreateAttendance', headerMode: 'none'},
+);
 const HomeStackNavigator = createStackNavigator(
   {
     Home: {
@@ -187,7 +200,7 @@ const HomeStackNavigator = createStackNavigator(
       navigationOptions: {title: 'Leave/Outing Requests'},
     },
     TeacherCreateAttendance: {
-      screen: TeacherCreateAttendance,
+      screen: teacherGenerateCodeNavigator,
       navigationOptions: {title: 'Create Attendance Code'},
     },
     GuardScanAttendance: {
@@ -215,9 +228,9 @@ export default class App extends React.Component {
     return (
       <StoreProvider store={store}>
         <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-          <PaperProvider>
-            <Navigation />
-          </PaperProvider>
+          {/* <PaperProvider> */}
+          <Navigation />
+          {/* </PaperProvider> */}
         </PersistGate>
       </StoreProvider>
     );

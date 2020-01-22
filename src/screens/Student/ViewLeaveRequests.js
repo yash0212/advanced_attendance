@@ -60,7 +60,10 @@ class ViewLeaveRequests extends PureComponent {
           style={styles.leave}
           disabled={req.status === 1 ? false : true}
           onPress={() => {
-            this.props.navigation.navigate('StudentDisplayCode');
+            this.props.navigation.navigate('StudentDisplayCode', {
+              id: req.id,
+              type: 'leave',
+            });
           }}>
           {req.status === 0 && <View style={styles.statusUnapproved} />}
           {req.status === 1 && <View style={styles.statusApproved} />}
