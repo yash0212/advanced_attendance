@@ -1,5 +1,5 @@
-// var endpoint = 'http://7a1d81b0.ngrok.io';
-var endpoint = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com';
+var endpoint = 'http://d950b57d.ngrok.io';
+// var endpoint = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com';
 var path = '/api/fetch-outing';
 var uri = endpoint + path;
 // var uri = 'http://localhost/api/login';

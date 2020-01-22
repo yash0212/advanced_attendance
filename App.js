@@ -24,6 +24,7 @@ import ApplyLeaveRequest from './src/screens/Student/ApplyLeaveRequest';
 import StudentAttendance from './src/screens/Student/ViewAttendance';
 import StudentViewLeaveRequests from './src/screens/Student/ViewLeaveRequests';
 import StudentViewOutingRequests from './src/screens/Student/ViewOutingRequests';
+import StudentDisplayCode from './src/screens/Student/DisplayCode';
 //Teacher Screens
 import TeacherCreateAttendance from './src/screens/Teacher/CreateAttendance';
 //Guard Screens
@@ -58,14 +59,42 @@ const studentApplyLeaveOutingNavigator = createBottomTabNavigator(
     },
   },
 );
-const studentViewLeaveOutingNavigator = createBottomTabNavigator(
+const studentViewLeaveCodeNavigator = createStackNavigator(
+  {
+    ViewLeaveRequests: {
+      screen: StudentViewLeaveRequests,
+    },
+    StudentDisplayCode: {
+      screen: StudentDisplayCode,
+    },
+  },
+  {
+    initialRouteName: 'ViewLeaveRequests',
+    headerMode: 'none',
+  },
+);
+const studentViewOutingCodeNavigator = createStackNavigator(
   {
     ViewOutingRequests: {
       screen: StudentViewOutingRequests,
+    },
+    StudentDisplayCode: {
+      screen: StudentDisplayCode,
+    },
+  },
+  {
+    initialRouteName: 'ViewOutingRequests',
+    headerMode: 'none',
+  },
+);
+const studentViewLeaveOutingNavigator = createBottomTabNavigator(
+  {
+    ViewOutingRequests: {
+      screen: studentViewOutingCodeNavigator,
       navigationOptions: {title: 'Outing'},
     },
     ViewLeaveRequests: {
-      screen: StudentViewLeaveRequests,
+      screen: studentViewLeaveCodeNavigator,
       navigationOptions: {title: 'Leave'},
     },
   },

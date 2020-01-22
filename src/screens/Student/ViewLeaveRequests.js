@@ -56,7 +56,12 @@ class ViewLeaveRequests extends PureComponent {
     }
     return (
       <View style={styles.leaveContainer}>
-        <TouchableOpacity style={styles.leave}>
+        <TouchableOpacity
+          style={styles.leave}
+          disabled={req.status === 1 ? false : true}
+          onPress={() => {
+            this.props.navigation.navigate('StudentDisplayCode');
+          }}>
           {req.status === 0 && <View style={styles.statusUnapproved} />}
           {req.status === 1 && <View style={styles.statusApproved} />}
           {req.status === 2 && <View style={styles.statusRejected} />}
