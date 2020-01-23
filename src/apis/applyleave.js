@@ -1,8 +1,6 @@
-var endpoint = 'http://c2a398f9.ngrok.io';
-// var endpoint = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com';
+import endpoint from './apiConfig';
 var path = '/api/apply-leave';
 var uri = endpoint + path;
-// var uri = 'http://localhost/api/login';
 export const applyLeave = async (token, visitTo, reason, outDate, inDate) => {
   const response = await fetch(uri, {
     method: 'POST',

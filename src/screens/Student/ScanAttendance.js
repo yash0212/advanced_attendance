@@ -9,23 +9,29 @@ class ScanAttendance extends PureComponent {
   };
   takePicture = async () => {
     if (this.camera) {
-      const options = {quality: 0.5};
+      const options = {
+        quality: 0.5,
+        base64: true,
+        width: 800,
+        fixOrientation: true,
+      };
       const data = await this.camera.takePictureAsync(options);
       fetch('https://dizpw6y7m8.execute-api.ap-south-1.amazonaws.com/prod/', {
         method: 'post',
         headers: {
-          'Content-Type': 'image/jpg',
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: data,
+        body: JSON.stringify({imageData: data.base64}),
       })
         .then(function(response) {
           return response.json();
         })
-        .then(function(data) {
-          console.log('data: ', data);
+        .then(function(serverData) {
+          console.log('data: ', serverData);
+        })
+        .catch(err => {
+          console.log(err, err.message);
         });
-      console.log(data.uri);
     }
   };
   toggleFlash = () => {

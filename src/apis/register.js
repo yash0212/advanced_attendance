@@ -1,9 +1,6 @@
-var endpoint = 'http://c2a398f9.ngrok.io';
-// var endpoint = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com';
-var path = '/api/register';
+import endpoint from './apiConfig';
+var path = '/api/apply-leave';
 var uri = endpoint + path;
-// var uri = 'http://localhost/api/register';
-// var uri = 'http://ec2-15-206-69-32.ap-south-1.compute.amazonaws.com/api/register';
 export const register = async (
   email,
   name,
