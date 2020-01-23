@@ -43,7 +43,7 @@ const studentApplyLeaveOutingNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'ApplyLeaveRequest',
+    initialRouteName: 'ApplyOutingRequest',
     tabBarOptions: {
       activeTintColor: '#ff475d',
       activeBackgroundColor: '#ffffff',

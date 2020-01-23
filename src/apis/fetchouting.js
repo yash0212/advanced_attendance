@@ -1,5 +1,5 @@
 import endpoint from './apiConfig';
-var path = '/api/apply-leave';
+var path = '/api/fetch-outing';
 var uri = endpoint + path;
 export const fetchOuting = async (token, start = 0, length = 15) => {
   const response = await fetch(uri, {

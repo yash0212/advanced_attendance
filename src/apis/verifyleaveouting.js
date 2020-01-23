@@ -1,7 +1,7 @@
 import endpoint from './apiConfig';
-var path = '/api/apply-outing';
+var path = '/api/verify-leave-outing';
 var uri = endpoint + path;
-export const applyOuting = async (token, visitTo, reason, outTime, inTime) => {
+export const verifyLeaveOuting = async (token, id, type) => {
   const response = await fetch(uri, {
     method: 'POST',
     headers: {
@@ -10,24 +10,29 @@ export const applyOuting = async (token, visitTo, reason, outTime, inTime) => {
       Authorization: 'Bearer ' + token,
     },
     body: JSON.stringify({
-      visit_to: visitTo,
-      reason: reason,
-      out_time: Math.floor(new Date(outTime).getTime() / 1000),
-      in_time: Math.floor(new Date(inTime).getTime() / 1000),
+      id: id,
+      type: type,
     }),
   });
+  var resp = await response.text();
+  console.log(resp);
   if (response.ok) {
     const {status, msg, data} = await response.json();
     if (status === 'success') {
-      return {status, msg};
+      return {
+        updateLeaveMsgType: 'success',
+        leaveRequests: data,
+        msg: msg,
+      };
     } else {
-      const errMessage = await response.text();
-      throw new Error(errMessage);
+      throw new Error(msg);
     }
   }
-  if (response.status === 400 || response.status === 422) {
+  if (response.status === 400) {
     var parsedBody = JSON.parse(await response.text());
-    const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
+    // console.log(parsedBody);
+    // const errMessage = parsedBody.errors[Object.keys(parsedBody['errors'])[0]];
+    const errMessage = parsedBody.message;
     throw new Error(errMessage);
   }
   const errMessage = await response.text();

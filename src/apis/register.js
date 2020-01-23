@@ -1,5 +1,5 @@
 import endpoint from './apiConfig';
-var path = '/api/apply-leave';
+var path = '/api/register';
 var uri = endpoint + path;
 export const register = async (
   email,

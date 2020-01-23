@@ -152,14 +152,12 @@ class HomeScreen extends PureComponent {
       return (
         <View style={styles.container}>
           {this.renderTitle()}
-          <TouchableOpacity style={styles.tile}>
-            <Text
-              style={styles.tileTitle}
-              onPress={() => {
-                this.props.navigation.navigate('GuardScanAttendance');
-              }}>
-              Verify Leave/Outing
-            </Text>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('GuardScanAttendance');
+            }}>
+            <Text style={styles.tileTitle}>Verify Leave/Outing</Text>
             <Text style={styles.tileDescription}>
               Scan the student's code and verify if he/she is permitted to leave
               the college campus

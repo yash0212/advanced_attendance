@@ -79,7 +79,12 @@ const reducer = (state = {}, action) => {
         registerMsgType: 'error',
       });
     case LOGOUT:
-      return merge(state, {token: undefined, user: undefined});
+      return merge(state, {
+        token: undefined,
+        user: undefined,
+        outingRequests: undefined,
+        leaveRequests: undefined,
+      });
     case FETCH_OUTING_SENT:
       return merge(state, {
         loading: true,

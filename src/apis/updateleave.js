@@ -1,5 +1,5 @@
 import endpoint from './apiConfig';
-var path = '/api/apply-leave';
+var path = '/api/update-leave';
 var uri = endpoint + path;
 export const updateLeave = async (token, leave_id, requestStatus = 0) => {
   const response = await fetch(uri, {

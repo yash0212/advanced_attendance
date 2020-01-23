@@ -74,7 +74,6 @@ class ViewLeaveRequests extends PureComponent {
         status = 'Unknown';
         break;
     }
-    console.log(req.id + ':' + req.applied_by.name);
     let dispButton =
       (req.status === 0 || req.status === -1) &&
       this.state.buttonVisible['leave_' + index];
