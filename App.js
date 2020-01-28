@@ -28,6 +28,7 @@ import StudentDisplayCode from './src/screens/Student/DisplayCode';
 //Teacher Screens
 import TeacherCreateAttendance from './src/screens/Teacher/CreateAttendance';
 import TeacherDisplayCode from './src/screens/Teacher/DisplayCode';
+import TeacherChirp from './src/screens/Teacher/Chirp';
 //Guard Screens
 import GuardScanAttendance from './src/screens/Guard/ScanCode';
 
@@ -157,6 +158,9 @@ const teacherGenerateCodeNavigator = createStackNavigator(
     },
     TeacherDisplayCode: {
       screen: TeacherDisplayCode,
+    },
+    TeacherChirp: {
+      screen: TeacherChirp,
     },
   },
   {initialRouteName: 'TeacherCreateAttendance', headerMode: 'none'},

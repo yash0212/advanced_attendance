@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/update-leave';
 var uri = endpoint + path;
 export const updateLeave = async (token, leave_id, requestStatus = 0) => {

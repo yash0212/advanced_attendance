@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/apply-leave';
 var uri = endpoint + path;
 export const applyLeave = async (token, visitTo, reason, outDate, inDate) => {
