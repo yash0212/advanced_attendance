@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/verify-leave-outing';
 var uri = endpoint + path;
 export const verifyLeaveOuting = async (token, id, type) => {

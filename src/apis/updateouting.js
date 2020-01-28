@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/update-outing';
 var uri = endpoint + path;
 export const updateOuting = async (token, outing_id, requestStatus = 0) => {

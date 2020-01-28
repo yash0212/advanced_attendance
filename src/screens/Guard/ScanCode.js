@@ -10,7 +10,7 @@ import {
 import {RNCamera} from 'react-native-camera';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import Snackbar from 'react-native-snackbar';
-import endpoint from '../../apis/apiConfig';
+import endpoint from '../../config/api';
 import {connect} from 'react-redux';
 import {getDisplay} from 'react-native-device-info';
 

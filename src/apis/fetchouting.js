@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/fetch-outing';
 var uri = endpoint + path;
 export const fetchOuting = async (token, start = 0, length = 15) => {

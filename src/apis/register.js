@@ -1,4 +1,4 @@
-import endpoint from './apiConfig';
+import endpoint from '../config/api';
 var path = '/api/register';
 var uri = endpoint + path;
 export const register = async (

@@ -8,80 +8,142 @@ import {
 } from 'react-native';
 
 class CreateAttendance extends PureComponent {
-  state = {};
+  state = {
+    lectureNumber: '',
+    subjectCode: '',
+    degree: '',
+    department: '',
+    section: '',
+    year: '',
+  };
+  constructor(props) {
+    super(props);
+  }
+  handleLectureNumberInput(lectureNumber) {
+    this.setState({lectureNumber: lectureNumber});
+  }
+  handleSubjectCodeInput(subjectCode) {
+    this.setState({subjectCode: subjectCode});
+  }
+  handleDegreeInput(degree) {
+    this.setState({degree: degree});
+  }
+  handleDepartmentInput(department) {
+    this.setState({department: department});
+  }
+  handleSectionInput(section) {
+    this.setState({section: section});
+  }
+  handleYearInput(year) {
+    this.setState({year: year});
+  }
+  _displayCode = () => {
+    this.props.navigation.navigate('TeacherDisplayCode', this.state);
+  };
+  _chirp = () => {
+    this.props.navigation.navigate('TeacherChirp', this.state);
+  };
   render() {
     return (
       <View style={styles.container}>
-        {/* <View style={styles.generateCodeFormContainer}>
+        <View style={styles.generateCodeFormContainer}>
           <TextInput
-            onChangeText={text => this.handleEmailInput(text)}
-            value={this.state.email}
-            style={styles.email}
-            placeholder="Email"
-            autoCompleteType="email"
-            keyboardType="email-address"
+            onChangeText={text => this.handleLectureNumberInput(text)}
+            value={this.state.lectureNumber}
+            style={styles.lectureNumber}
+            placeholder="Lecture Number"
+            keyboardType="numeric"
             returnKeyType="go"
-            textContentType="emailAddress"
-            autoCapitalize="none"
             onSubmitEditing={() => {
-              this.nameInput.focus();
+              this.subjectCodeInput.focus();
             }}
             blurOnSubmit={false}
           />
           <TextInput
-            onChangeText={text => this.handleNameInput(text)}
-            value={this.state.name}
-            style={styles.name}
-            placeholder="Name"
-            autoCompleteType="name"
-            autoCapitalize="words"
+            onChangeText={text => this.handleSubjectCodeInput(text)}
+            value={this.state.subjectCode}
+            style={styles.subjectCode}
+            placeholder="Subject Code"
+            autoCapitalize="characters"
             returnKeyType="go"
             ref={input => {
-              this.nameInput = input;
+              this.subjectCodeInput = input;
             }}
             onSubmitEditing={() => {
-              this.passwordInput.focus();
+              this.degreeInput.focus();
             }}
             blurOnSubmit={false}
           />
           <TextInput
-            onChangeText={text => this.handlePasswordInput(text)}
-            value={this.state.password}
-            style={styles.password}
-            placeholder="Password"
-            autoCompleteType="password"
+            onChangeText={text => this.handleDegreeInput(text)}
+            value={this.state.degree}
+            style={styles.degree}
+            placeholder="Degree"
             returnKeyType="go"
-            secureTextEntry={true}
-            textContentType="password"
             ref={input => {
-              this.passwordInput = input;
+              this.degreeInput = input;
             }}
             onSubmitEditing={() => {
-              this.confirmPasswordInput.focus();
+              this.departmentInput.focus();
             }}
             blurOnSubmit={false}
           />
           <TextInput
-            onChangeText={text => this.handleConfirmPasswordInput(text)}
-            value={this.state.confirmPassword}
-            style={styles.confirmPassword}
-            placeholder="Confirm Password"
+            onChangeText={text => this.handleDepartmentInput(text)}
+            value={this.state.department}
+            style={styles.department}
+            placeholder="Department"
+            autoCapitalize="characters"
             returnKeyType="go"
-            secureTextEntry={true}
-            textContentType="password"
             ref={input => {
-              this.confirmPasswordInput = input;
+              this.departmentInput = input;
+            }}
+            onSubmitEditing={() => {
+              this.sectionInput.focus();
+            }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            onChangeText={text => this.handleSectionInput(text)}
+            value={this.state.section}
+            style={styles.section}
+            placeholder="Section"
+            returnKeyType="go"
+            ref={input => {
+              this.sectionInput = input;
+            }}
+            onSubmitEditing={() => {
+              this.yearInput.focus();
+            }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            onChangeText={text => this.handleYearInput(text)}
+            value={this.state.year}
+            keyboardType="numeric"
+            style={styles.year}
+            placeholder="Year"
+            returnKeyType="done"
+            ref={input => {
+              this.yearInput = input;
             }}
           />
 
           <TouchableOpacity
             style={styles.createButton}
             onPress={() => {
-              this._createAccount();
+              this._displayCode();
             }}>
-            <Text style={styles.createButtonText}>Create Account</Text>
+            <Text style={styles.submitBtn}>Display Code</Text>
           </TouchableOpacity>
-        </View> */}
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => {
+              this._chirp();
+            }}>
+            <Text style={styles.submitBtn}>Chirp On</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -94,6 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#dadfe3',
     alignItems: 'center',
+    padding: 20,
   },
   generateCodeFormContainer: {
     display: 'flex',
@@ -101,17 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  error: {
-    backgroundColor: 'red',
-    color: 'red',
-    marginBottom: 5,
-  },
-  success: {
-    backgroundColor: 'green',
-    color: 'green',
-    marginBottom: 5,
-  },
-  email: {
+  lectureNumber: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,
@@ -120,7 +173,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  name: {
+  subjectCode: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,
@@ -129,7 +182,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  password: {
+  degree: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,
@@ -138,7 +191,25 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  confirmPassword: {
+  department: {
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
+    fontSize: 20,
+    minWidth: '100%',
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  section: {
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
+    fontSize: 20,
+    minWidth: '100%',
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 10,
+  },
+  year: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,
@@ -153,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#444444',
     padding: 10,
   },
-  createButtonText: {
+  submitBtn: {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
