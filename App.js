@@ -19,6 +19,7 @@ import AdminLeaveRequests from './src/screens/Admin/ViewLeaveRequests';
 import AdminAttendance from './src/screens/Admin/ViewAttendance';
 //Stduent Screens
 import StudentScanAttendance from './src/screens/Student/ScanAttendance';
+import StudentSmartAttendance from './src/screens/Student/SmartAttendance';
 import ApplyOutingRequest from './src/screens/Student/ApplyOutingRequest';
 import ApplyLeaveRequest from './src/screens/Student/ApplyLeaveRequest';
 import StudentAttendance from './src/screens/Student/ViewAttendance';
@@ -190,6 +191,10 @@ const HomeStackNavigator = createStackNavigator(
     StudentScanAttendance: {
       screen: StudentScanAttendance,
       navigationOptions: {title: 'Scan Attendance Code'},
+    },
+    StudentSmartAttendance: {
+      screen: StudentSmartAttendance,
+      navigationOptions: {title: 'Smart Attendance'},
     },
     ApplyOutingRequest: {
       screen: studentApplyLeaveOutingNavigator,

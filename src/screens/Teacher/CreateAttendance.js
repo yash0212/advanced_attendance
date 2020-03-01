@@ -9,12 +9,12 @@ import {
 
 class CreateAttendance extends PureComponent {
   state = {
-    lectureNumber: '',
-    subjectCode: '',
-    degree: '',
-    department: '',
-    section: '',
-    year: '',
+    lectureNumber: '2',
+    subjectCode: '15CS402',
+    degree: 'B.Tech.',
+    department: 'CSE',
+    section: 'E',
+    year: 4,
   };
   constructor(props) {
     super(props);
@@ -41,7 +41,10 @@ class CreateAttendance extends PureComponent {
     this.props.navigation.navigate('TeacherDisplayCode', this.state);
   };
   _chirp = () => {
-    this.props.navigation.navigate('TeacherChirp', this.state);
+    this.props.navigation.navigate('TeacherChirp', {
+      token: this.props.navigation.getParam('token'),
+      data: this.state,
+    });
   };
   render() {
     return (
@@ -119,7 +122,7 @@ class CreateAttendance extends PureComponent {
           />
           <TextInput
             onChangeText={text => this.handleYearInput(text)}
-            value={this.state.year}
+            value={`${this.state.year}`}
             keyboardType="numeric"
             style={styles.year}
             placeholder="Year"

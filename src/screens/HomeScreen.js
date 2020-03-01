@@ -98,6 +98,18 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
+              this.props.navigation.navigate('StudentSmartAttendance', {
+                user_id: this.props.user.id,
+              });
+            }}>
+            <Text style={styles.tileTitle}>Smart Attendance</Text>
+            <Text style={styles.tileDescription}>
+              You can mark attendance for your lectures in a smart way ;-)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
               this.props.navigation.navigate('ApplyOutingRequest');
             }}>
             <Text style={styles.tileTitle}>Apply For Leave/Outing</Text>
@@ -137,7 +149,9 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
-              this.props.navigation.navigate('TeacherCreateAttendance');
+              this.props.navigation.navigate('TeacherCreateAttendance', {
+                token: this.props.token,
+              });
             }}>
             <Text style={styles.tileTitle}>Generate Attendance Code</Text>
             <Text style={styles.tileDescription}>
