@@ -132,7 +132,9 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
-              this.props.navigation.navigate('StudentAttendance');
+              this.props.navigation.navigate('StudentAttendance', {
+                token: this.props.token,
+              });
             }}>
             <Text style={styles.tileTitle}>View Attendance</Text>
             <Text style={styles.tileDescription}>

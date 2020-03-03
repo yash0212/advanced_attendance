@@ -23,6 +23,7 @@ import StudentSmartAttendance from './src/screens/Student/SmartAttendance';
 import ApplyOutingRequest from './src/screens/Student/ApplyOutingRequest';
 import ApplyLeaveRequest from './src/screens/Student/ApplyLeaveRequest';
 import StudentAttendance from './src/screens/Student/ViewAttendance';
+import StudentDetailedAttendance from './src/screens/Student/ViewDetailedAttendance';
 import StudentViewLeaveRequests from './src/screens/Student/ViewLeaveRequests';
 import StudentViewOutingRequests from './src/screens/Student/ViewOutingRequests';
 import StudentDisplayCode from './src/screens/Student/DisplayCode';
@@ -120,6 +121,17 @@ const studentViewLeaveOutingNavigator = createBottomTabNavigator(
   },
 );
 
+const studentAttendanceNavigator = createStackNavigator(
+  {
+    StudentViewAttendance: {
+      screen: StudentAttendance,
+    },
+    StudentViewDetailedAttendance: {
+      screen: StudentDetailedAttendance,
+    },
+  },
+  {initialRouteName: 'StudentViewAttendance', headerMode: 'none'},
+);
 //Admin Bottom Tab navigator
 const adminViewLeaveOutingNavigator = createBottomTabNavigator(
   {
@@ -201,8 +213,8 @@ const HomeStackNavigator = createStackNavigator(
       navigationOptions: {title: 'Apply for Leave/Outing'},
     },
     StudentAttendance: {
-      screen: StudentAttendance,
-      navigationOptions: {title: 'Student View Attendance'},
+      screen: studentAttendanceNavigator,
+      navigationOptions: {title: 'View Attendance'},
     },
     StudentViewLeaveOutingRequests: {
       screen: studentViewLeaveOutingNavigator,

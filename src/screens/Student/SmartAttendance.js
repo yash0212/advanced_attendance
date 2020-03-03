@@ -32,13 +32,17 @@ class SmartAttendance extends PureComponent {
         this.onReceived = ChirpSDKEmitter.addListener('onReceived', event => {
           if (event.data) {
             console.log('data received on chirp student: ', event.data);
+            //Check if required data is received on chirp
             if (event.data.length === 2) {
+              //Check if chirp request is from teacher
               if (
                 event.data[0] === 1 &&
                 event.data[1] === this.props.navigation.getParam('user_id')
               ) {
                 clearInterval(this.timer);
-                this.setState({attendanceMarked: true});
+                this.setState({
+                  attendanceMarked: true,
+                });
               }
             }
           }

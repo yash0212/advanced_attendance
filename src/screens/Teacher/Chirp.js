@@ -11,6 +11,7 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 import Permissions, {PERMISSIONS} from 'react-native-permissions';
 import {key, secret, config} from '../../config/chirp';
 import apiUri from '../../config/api';
+import Snackbar from 'react-native-snackbar';
 
 const ChirpSDK = NativeModules.ChirpSDK;
 const ChirpSDKEmitter = new NativeEventEmitter(ChirpSDK);
@@ -40,8 +41,10 @@ class Chirp extends PureComponent {
       this.onReceived = ChirpSDKEmitter.addListener('onReceived', event => {
         if (event.data) {
           console.log('data received on chirp teacher: ', event.data);
+          //Check if required data is received on chirp
           if (event.data.length === 2) {
             let studentId = event.data[1];
+            //Check if chirp request is for updating attendance
             if (event.data[0] === 0 && studentId !== undefined) {
               let ind = -1;
               this.state.studentDetails.forEach((x, i) => {
@@ -49,6 +52,7 @@ class Chirp extends PureComponent {
                   ind = i;
                 }
               });
+              // Check if student is of current class or not
               if (ind !== -1) {
                 let updatedStudentList = this.state.studentDetails;
                 updatedStudentList[ind].attStatus = 1;
@@ -126,7 +130,44 @@ class Chirp extends PureComponent {
   displayEmptyStudentList = () => {
     return <Text>No Student Data available yet</Text>;
   };
-  submitAttendance = () => {};
+  submitAttendance = () => {
+    // console.log(this.state.studentDetails);
+    fetch(apiUri + '/api/submit-attendance', {
+      method: 'post',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
+      },
+      body: JSON.stringify({
+        lecture_number: this.props.navigation.getParam('data').lectureNumber,
+        subject_code: this.props.navigation.getParam('data').subjectCode,
+        degree: this.props.navigation.getParam('data').degree,
+        department: this.props.navigation.getParam('data').department,
+        section: this.props.navigation.getParam('data').section,
+        year: this.props.navigation.getParam('data').year,
+        attendance_data: this.state.studentDetails,
+      }),
+    })
+      .then(resp => resp.json())
+      .then(attResponse => {
+        if (attResponse.status === 'success') {
+          Snackbar.show({
+            text: attResponse.msg,
+            duration: Snackbar.LENGTH_LONG,
+          });
+        } else {
+          console.log('Submit attendance api failed: ', attResponse);
+          Snackbar.show({
+            text: 'Marking attendance failed. Please try again',
+            duration: Snackbar.LENGTH_LONG,
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err, err.message);
+      });
+  };
   componentWillUnmount() {
     ChirpSDK.stop();
     this.onReceived.remove();
