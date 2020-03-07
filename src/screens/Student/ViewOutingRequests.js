@@ -86,7 +86,7 @@ class ViewOutingRequests extends PureComponent {
     this.refreshOutingRequests();
   };
   displayEmptyOuting = () => {
-    return <Text>No leave request available to display</Text>;
+    return <Text>No outing request available to display</Text>;
   };
 
   render() {

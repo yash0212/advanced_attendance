@@ -110,22 +110,35 @@ class Chirp extends PureComponent {
         console.log(err, err.message);
       });
   };
+  toggleAttendance = student => {
+    var attendance = this.state.studentDetails;
+    attendance.forEach((x, i) => {
+      if (x.id === student.id) {
+        attendance[i].attStatus = !student.attStatus;
+      }
+    });
+    this.setState({
+      studentDetails: attendance,
+      refreshList: !this.state.refreshList,
+    });
+  };
   renderStudentList = (student, index) => {
-    if (student.attStatus === 0) {
-      return (
-        <View style={styles.studentTileAbsent}>
+    return (
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            this.toggleAttendance(student);
+          }}
+          style={
+            student.attStatus == 0
+              ? styles.studentTileAbsent
+              : styles.studentTilePresent
+          }>
           <Text style={styles.studentName}>{student.name}</Text>
           <Text style={styles.studentRegno}>{student.regno}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.studentTilePresent}>
-          <Text style={styles.studentName}>{student.name}</Text>
-          <Text style={styles.studentRegno}>{student.regno}</Text>
-        </View>
-      );
-    }
+        </TouchableOpacity>
+      </View>
+    );
   };
   displayEmptyStudentList = () => {
     return <Text>No Student Data available yet</Text>;
