@@ -68,10 +68,12 @@ class ViewAttendance extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerSubject}>Subject Code</Text>
-          <Text style={styles.headerHours}>Attended/Total</Text>
-        </View>
+        {this.state.attendanceData.length !== 0 && (
+          <View style={styles.header}>
+            <Text style={styles.headerSubject}>Subject Code</Text>
+            <Text style={styles.headerHours}>Attended/Total</Text>
+          </View>
+        )}
         <FlatList
           style={styles.subjectContainer}
           data={this.state.attendanceData}
