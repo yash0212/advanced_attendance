@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import Permissions, {PERMISSIONS} from 'react-native-permissions';
@@ -27,6 +28,7 @@ class Chirp extends PureComponent {
     data: 'hello',
     studentDetails: [],
     refreshList: true,
+    loading: false,
   };
   constructor(props) {
     super(props);
@@ -38,39 +40,29 @@ class Chirp extends PureComponent {
       await Permissions.request(PERMISSIONS.ANDROID.RECORD_AUDIO);
     }
     if (response === 'granted') {
-      this.onReceived = ChirpSDKEmitter.addListener('onReceived', event => {
-        if (event.data) {
-          console.log('data received on chirp teacher: ', event.data);
-          //Check if required data is received on chirp
-          if (event.data.length === 2) {
-            let studentId = event.data[1];
-            //Check if chirp request is for updating attendance
-            if (event.data[0] === 0 && studentId !== undefined) {
-              let ind = -1;
-              this.state.studentDetails.forEach((x, i) => {
-                if (x.id === studentId) {
-                  ind = i;
-                }
-              });
-              // Check if student is of current class or not
-              if (ind !== -1) {
-                let updatedStudentList = this.state.studentDetails;
-                updatedStudentList[ind].attStatus = 1;
-                this.setState({
-                  studentDetails: updatedStudentList,
-                  refreshList: !this.state.refreshList,
-                });
-              }
-              //send chirp to stop student from sending anymore data
-              ChirpSDK.send([1, studentId]);
-              this.setState({data: event.data});
-            }
-          }
-        }
-      });
       this.onError = ChirpSDKEmitter.addListener('onError', event => {
         console.warn(event.message);
       });
+      let data = this.props.navigation.getParam('data');
+      let lectureNumber = parseInt(data.lectureNumber);
+      let subject = data.subjectId;
+      let teacherId = this.props.navigation.getParam('uid');
+      let degree = data.degreeId;
+      let dept = data.departmentId;
+      let sec = data.section.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+      let year = data.year;
+
+      // this.timer = setInterval(() => {
+      //   ChirpSDK.send([
+      //     lectureNumber,
+      //     subject,
+      //     teacherId,
+      //     degree,
+      //     dept,
+      //     sec,
+      //     year,
+      //   ]);
+      // }, 7000);
 
       ChirpSDK.init(key, secret);
       ChirpSDK.setConfig(config);
@@ -78,6 +70,8 @@ class Chirp extends PureComponent {
     }
   }
   fetchStudents = () => {
+    this.setState({loading: true});
+    let data = this.props.navigation.getParam('data');
     fetch(apiUri + '/api/fetch-students-detail', {
       method: 'post',
       headers: {
@@ -86,35 +80,38 @@ class Chirp extends PureComponent {
         Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
       },
       body: JSON.stringify({
-        degree: this.props.navigation.getParam('data').degree,
-        department: this.props.navigation.getParam('data').department,
-        section: this.props.navigation.getParam('data').section,
-        year: this.props.navigation.getParam('data').year,
+        degree: data.degreeId,
+        department: data.departmentId,
+        section: data.section,
+        year: data.year,
+        subject_code: data.subjectId,
+        lecture_no: data.lectureNumber,
       }),
     })
       .then(resp => resp.json())
       .then(studentDataResp => {
         if (studentDataResp.status === 'success') {
-          let studentsData = [...studentDataResp.students_data];
-          studentsData = studentsData.map(x => {
-            x.attStatus = 0;
-            return x;
-          });
+          let studentsData = [...studentDataResp.attendance_data];
           this.setState({
             studentDetails: studentsData,
             refreshList: !this.state.refreshList,
+            loading: false,
           });
         }
       })
       .catch(err => {
         console.log(err, err.message);
+        this.setState({
+          loading: false,
+        });
       });
   };
   toggleAttendance = student => {
     var attendance = this.state.studentDetails;
     attendance.forEach((x, i) => {
-      if (x.id === student.id) {
-        attendance[i].attStatus = !student.attStatus;
+      if (x.student_id === student.student_id) {
+        attendance[i].attendance_status =
+          student.attendance_status === 1 ? 0 : 1;
       }
     });
     this.setState({
@@ -130,7 +127,7 @@ class Chirp extends PureComponent {
             this.toggleAttendance(student);
           }}
           style={
-            student.attStatus == 0
+            student.attendance_status === 0
               ? styles.studentTileAbsent
               : styles.studentTilePresent
           }>
@@ -140,12 +137,9 @@ class Chirp extends PureComponent {
       </View>
     );
   };
-  displayEmptyStudentList = () => {
-    return <Text>No Student Data available yet</Text>;
-  };
   submitAttendance = () => {
-    // console.log(this.state.studentDetails);
-    fetch(apiUri + '/api/submit-attendance', {
+    let data = this.props.navigation.getParam('data');
+    fetch(apiUri + '/api/teacher-submit-attendance', {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -153,12 +147,12 @@ class Chirp extends PureComponent {
         Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
       },
       body: JSON.stringify({
-        lecture_number: this.props.navigation.getParam('data').lectureNumber,
-        subject_code: this.props.navigation.getParam('data').subjectCode,
-        degree: this.props.navigation.getParam('data').degree,
-        department: this.props.navigation.getParam('data').department,
-        section: this.props.navigation.getParam('data').section,
-        year: this.props.navigation.getParam('data').year,
+        degree: data.degreeId,
+        department: data.departmentId,
+        subject_code: data.subjectId,
+        section: data.section,
+        year: data.year,
+        lecture_number: data.lectureNumber,
         attendance_data: this.state.studentDetails,
       }),
     })
@@ -183,18 +177,24 @@ class Chirp extends PureComponent {
   };
   componentWillUnmount() {
     ChirpSDK.stop();
-    this.onReceived.remove();
+    // this.onReceived.remove();
     this.onError.remove();
+    this.timer = null;
   }
   render() {
     return (
       <View style={styles.container}>
         <FlatList
           style={styles.studentDetailsContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loading}
+              onRefresh={() => this.fetchStudents()}
+            />
+          }
           data={this.state.studentDetails}
           renderItem={({item, index}) => this.renderStudentList(item, index)}
-          keyExtractor={item => 'student_' + item.id}
-          ListEmptyComponent={this.displayEmptyStudentList()}
+          keyExtractor={item => 'student_' + item.student_id}
           extraData={this.state.refreshList}
         />
         <TouchableOpacity

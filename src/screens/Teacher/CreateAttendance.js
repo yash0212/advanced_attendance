@@ -5,16 +5,25 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Picker,
+  ActivityIndicator,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
+import apiUri from '../../config/api';
 
 class CreateAttendance extends PureComponent {
   state = {
     lectureNumber: '2',
-    subjectCode: '15CS402',
-    degree: 'B.Tech.',
-    department: 'CSE',
-    section: 'E',
+    subjectId: 1,
+    subject: '',
+    subjects: [],
+    degreeId: '',
+    degrees: [],
+    departmentId: '',
+    departments: [],
+    section: 'B',
     year: 4,
+    loading: true,
   };
   constructor(props) {
     super(props);
@@ -22,31 +31,101 @@ class CreateAttendance extends PureComponent {
   handleLectureNumberInput(lectureNumber) {
     this.setState({lectureNumber: lectureNumber});
   }
-  handleSubjectCodeInput(subjectCode) {
-    this.setState({subjectCode: subjectCode});
-  }
-  handleDegreeInput(degree) {
-    this.setState({degree: degree});
-  }
-  handleDepartmentInput(department) {
-    this.setState({department: department});
-  }
   handleSectionInput(section) {
     this.setState({section: section});
   }
   handleYearInput(year) {
     this.setState({year: year});
   }
+  renderSubjects = () => {
+    return this.state.subjects.map((x, i) => (
+      <Picker.Item key={i} label={x.name} value={x.id} />
+    ));
+  };
+  renderDegrees = () => {
+    return this.state.degrees.map((x, i) => (
+      <Picker.Item key={i} label={x.name} value={x.id} />
+    ));
+  };
+  renderDepartments = () => {
+    return this.state.departments.map((x, i) => (
+      <Picker.Item key={i} label={x.name} value={x.id} />
+    ));
+  };
   _displayCode = () => {
     this.props.navigation.navigate('TeacherDisplayCode', this.state);
   };
   _chirp = () => {
     this.props.navigation.navigate('TeacherChirp', {
       token: this.props.navigation.getParam('token'),
+      uid: this.props.navigation.getParam('uid'),
       data: this.state,
     });
   };
+  async componentDidMount() {
+    try {
+      //Fetch Degrees
+      let subjectsResp = await fetch(apiUri + '/api/fetch-subjects', {
+        method: 'get',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+      });
+      subjectsResp = await subjectsResp.json();
+      if (subjectsResp.status === 'success') {
+        this.setState({subjects: subjectsResp.data});
+      } else {
+        throw 'Fetch subjects api error';
+      }
+
+      //Fetch Degrees
+      let degreesResp = await fetch(apiUri + '/api/fetch-degrees', {
+        method: 'get',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+      });
+      degreesResp = await degreesResp.json();
+      if (degreesResp.status === 'success') {
+        this.setState({degrees: degreesResp.data});
+      } else {
+        throw 'Fetch degree api error';
+      }
+
+      //Fetch Departments
+      let departmentsResp = await fetch(apiUri + '/api/fetch-departments', {
+        method: 'get',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+      });
+      departmentsResp = await departmentsResp.json();
+      if (departmentsResp.status === 'success') {
+        this.setState({departments: departmentsResp.data});
+      } else {
+        throw 'Fetch department api error';
+      }
+
+      this.setState({loading: false});
+    } catch (e) {
+      console.log(e);
+      Snackbar.show({
+        text: 'Some error occurred. Please check your internet and retry',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
+  }
   render() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.generateCodeFormContainer}>
@@ -57,55 +136,29 @@ class CreateAttendance extends PureComponent {
             placeholder="Lecture Number"
             keyboardType="numeric"
             returnKeyType="go"
-            onSubmitEditing={() => {
-              this.subjectCodeInput.focus();
-            }}
             blurOnSubmit={false}
           />
-          <TextInput
-            onChangeText={text => this.handleSubjectCodeInput(text)}
-            value={this.state.subjectCode}
-            style={styles.subjectCode}
-            placeholder="Subject Code"
-            autoCapitalize="characters"
-            returnKeyType="go"
-            ref={input => {
-              this.subjectCodeInput = input;
-            }}
-            onSubmitEditing={() => {
-              this.degreeInput.focus();
-            }}
-            blurOnSubmit={false}
-          />
-          <TextInput
-            onChangeText={text => this.handleDegreeInput(text)}
-            value={this.state.degree}
+
+          <Picker
+            selectedValue={this.state.subjectId}
+            style={styles.subject}
+            onValueChange={subject => this.setState({subjectId: subject})}>
+            {this.renderSubjects()}
+          </Picker>
+          <Picker
+            selectedValue={this.state.degreeId}
             style={styles.degree}
-            placeholder="Degree"
-            returnKeyType="go"
-            ref={input => {
-              this.degreeInput = input;
-            }}
-            onSubmitEditing={() => {
-              this.departmentInput.focus();
-            }}
-            blurOnSubmit={false}
-          />
-          <TextInput
-            onChangeText={text => this.handleDepartmentInput(text)}
-            value={this.state.department}
+            onValueChange={degree => this.setState({degreeId: degree})}>
+            {this.renderDegrees()}
+          </Picker>
+          <Picker
+            selectedValue={this.state.departmentId}
             style={styles.department}
-            placeholder="Department"
-            autoCapitalize="characters"
-            returnKeyType="go"
-            ref={input => {
-              this.departmentInput = input;
-            }}
-            onSubmitEditing={() => {
-              this.sectionInput.focus();
-            }}
-            blurOnSubmit={false}
-          />
+            onValueChange={department =>
+              this.setState({departmentId: department})
+            }>
+            {this.renderDepartments()}
+          </Picker>
           <TextInput
             onChangeText={text => this.handleSectionInput(text)}
             value={this.state.section}
@@ -176,7 +229,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  subjectCode: {
+  subject: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,

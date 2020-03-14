@@ -153,6 +153,7 @@ class HomeScreen extends PureComponent {
             onPress={() => {
               this.props.navigation.navigate('TeacherCreateAttendance', {
                 token: this.props.token,
+                uid: this.props.user.id,
               });
             }}>
             <Text style={styles.tileTitle}>Generate Attendance Code</Text>
