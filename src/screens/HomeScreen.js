@@ -100,6 +100,7 @@ class HomeScreen extends PureComponent {
             onPress={() => {
               this.props.navigation.navigate('StudentSmartAttendance', {
                 user_id: this.props.user.id,
+                token: this.props.token,
               });
             }}>
             <Text style={styles.tileTitle}>Smart Attendance</Text>

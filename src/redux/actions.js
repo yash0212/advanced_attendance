@@ -40,11 +40,11 @@ export const APPLY_OUTING_SENT = 'APPLY_OUTING_SENT';
 export const APPLY_OUTING_SUCCESS = 'APPLY_OUTING_SUCCESS';
 export const APPLY_OUTING_REJECTED = 'APPLY_OUTING_REJECTED';
 //Action Creators
-export const loginUser = (regno, password) => async dispatch => {
+export const loginUser = (email, password, deviceHash) => async dispatch => {
   // console.log('Login Fired');
   dispatch({type: LOG_IN_SENT});
   try {
-    const data = await login(regno, password);
+    const data = await login(email, password, deviceHash);
     // console.log('action login success: ', data);
     dispatch({type: LOG_IN_SUCCESS, payload: data});
   } catch (err) {

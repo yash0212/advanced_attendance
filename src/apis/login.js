@@ -1,11 +1,18 @@
 import endpoint from '../config/api';
 var path = '/api/login';
 var uri = endpoint + path;
-export const login = async (email, password) => {
+export const login = async (email, password, deviceHash) => {
   const response = await fetch(uri, {
     method: 'POST',
-    headers: {accept: 'application/json', 'content-type': 'application/json'},
-    body: JSON.stringify({email: email, password: password}),
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      device_hash: deviceHash,
+    }),
   });
 
   if (response.ok) {

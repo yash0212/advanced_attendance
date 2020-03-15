@@ -47,13 +47,15 @@ class LoginScreen extends PureComponent {
     });
   }
   _login = async () => {
-    this.props.loginUser(this.state.email, this.state.password);
+    let deviceHash = getUniqueId();
+    deviceHash =
+      'OINPlSTKP16cTXv9kFTR2FAaewTQKKOOuwKLsuLNQw$4u286iEr3wSRvuTu9YzenUJ60oNA85mRgimJo0x5Bly1f1U3UTDiv1vPP';
+    this.props.loginUser(this.state.email, this.state.password, deviceHash);
   };
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.loginFormContainer}>
-          <Text>{getUniqueId()}</Text>
           <Message msg={this.props.msg} msgType={this.props.msgType} />
           <TextInput
             onChangeText={text => this.handleEmailInput(text)}
