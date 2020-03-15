@@ -4,13 +4,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-  EventSubscriptionVendor,
   ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {key, secret, config} from '../../config/chirp';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import Permissions, {PERMISSIONS} from 'react-native-permissions';
+import apiUri from '../../config/api';
+import Snackbar from 'react-native-snackbar';
 
 const ChirpSDK = NativeModules.ChirpSDK;
 const ChirpSDKEmitter = new NativeEventEmitter(ChirpSDK);
@@ -27,23 +28,13 @@ class SmartAttendance extends PureComponent {
       if (response !== 'authorized') {
         await Permissions.request(PERMISSIONS.ANDROID.RECORD_AUDIO);
       }
-      console.log(response);
       if (response === 'granted') {
         this.onReceived = ChirpSDKEmitter.addListener('onReceived', event => {
           if (event.data) {
             console.log('data received on chirp student: ', event.data);
             //Check if required data is received on chirp
-            if (event.data.length === 2) {
-              //Check if chirp request is from teacher
-              if (
-                event.data[0] === 1 &&
-                event.data[1] === this.props.navigation.getParam('user_id')
-              ) {
-                clearInterval(this.timer);
-                this.setState({
-                  attendanceMarked: true,
-                });
-              }
+            if (event.data.length === 7) {
+              this._markAttendance(event.data);
             }
           }
         });
@@ -54,15 +45,62 @@ class SmartAttendance extends PureComponent {
         ChirpSDK.init(key, secret);
         ChirpSDK.setConfig(config);
         ChirpSDK.start();
-
-        this.timer = setInterval(() => {
-          ChirpSDK.send([0, this.props.navigation.getParam('user_id')]);
-        }, 5000);
       }
     } catch (error) {
       console.error(error);
     }
   }
+  _markAttendance = data => {
+    let lectureNumber = data[0];
+    let subject = data[1];
+    let teacherId = data[2];
+    let degree = data[3];
+    let dept = data[4];
+    let sec = data[5];
+    sec = String.fromCharCode('A'.charCodeAt(0) + sec - 1);
+    let year = data[6];
+
+    // lecture_no, subject_id, teacher_id, degree, department, section, year
+    var hash =
+      'MMnta98We1N%6h3r11MP@6wpl48NOV@3NNM%7ei1iR0M#5U7i6N#4ZCVP%8ZOkgLNhdq8p2x7b0e1NHvK0Ku1rOCa7C7t20knDOO';
+    // var hash = '';
+    fetch(apiUri + '/api/student-mark-attendance', {
+      method: 'post',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
+      },
+      body: JSON.stringify({
+        code: hash,
+      }),
+    })
+      .then(resp => {
+        if (resp.status === 401) {
+          Snackbar.show({
+            text: 'Please login again to continue',
+            duration: Snackbar.LENGTH_LONG,
+          });
+          this.props.navigation.navigate('Login');
+        } else {
+          return resp.json();
+        }
+      })
+      .then(attendanceMarkedResp => {
+        if (attendanceMarkedResp.status === 'success') {
+          Snackbar.show({
+            text: attendanceMarkedResp.msg,
+            duration: Snackbar.LENGTH_LONG,
+          });
+          this.setState({
+            attendanceMarked: true,
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err, err.message);
+      });
+  };
   componentWillUnmount() {
     ChirpSDK.stop();
     this.onReceived.remove();
@@ -82,6 +120,12 @@ class SmartAttendance extends PureComponent {
       <View style={styles.container}>
         <Text>Marking Attendance</Text>
         <ActivityIndicator />
+        <TouchableOpacity
+          onPress={() => {
+            this._markAttendance(2, 2, 2, 2, 2, 2, 2);
+          }}>
+          <Text>mark att</Text>
+        </TouchableOpacity>
       </View>
     );
   }

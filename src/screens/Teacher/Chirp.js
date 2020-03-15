@@ -52,17 +52,17 @@ class Chirp extends PureComponent {
       let sec = data.section.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
       let year = data.year;
 
-      // this.timer = setInterval(() => {
-      //   ChirpSDK.send([
-      //     lectureNumber,
-      //     subject,
-      //     teacherId,
-      //     degree,
-      //     dept,
-      //     sec,
-      //     year,
-      //   ]);
-      // }, 7000);
+      this.timer = setInterval(() => {
+        ChirpSDK.send([
+          lectureNumber,
+          subject,
+          teacherId,
+          degree,
+          dept,
+          sec,
+          year,
+        ]);
+      }, 7000);
 
       ChirpSDK.init(key, secret);
       ChirpSDK.setConfig(config);
@@ -179,7 +179,7 @@ class Chirp extends PureComponent {
     ChirpSDK.stop();
     // this.onReceived.remove();
     this.onError.remove();
-    this.timer = null;
+    clearInterval(this.timer);
   }
   render() {
     return (
