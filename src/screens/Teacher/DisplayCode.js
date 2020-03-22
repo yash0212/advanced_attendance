@@ -10,11 +10,19 @@ class DisplayCode extends PureComponent {
     code: '',
   };
   componentDidMount() {
+    let uid = this.props.navigation.getParam('uid');
+    let data = this.props.navigation.getParam('data');
+
     this.timer = setInterval(() => {
       this.setState({
         code: this.generateCode(
-          this.props.navigation.getParam('id'),
-          this.props.navigation.getParam('type'),
+          data.lectureNumber,
+          data.subjectId,
+          uid,
+          data.degreeId,
+          data.departmentId,
+          data.section,
+          data.year,
         ),
       });
     }, 2000);
@@ -22,7 +30,15 @@ class DisplayCode extends PureComponent {
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  generateCode(id, type) {
+  generateCode(
+    lectureNumber,
+    subjectId,
+    uid,
+    degreeId,
+    departmentId,
+    section,
+    year,
+  ) {
     var result = '';
     var characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

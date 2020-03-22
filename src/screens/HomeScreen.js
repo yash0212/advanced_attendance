@@ -51,7 +51,10 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
-              this.props.navigation.navigate('AdminAttendance');
+              this.props.navigation.navigate('AdminAttendance', {
+                uid: this.props.user.id,
+                token: this.props.token,
+              });
             }}>
             <Text style={styles.tileTitle}>View Attendance</Text>
             <Text style={styles.tileDescription}>
@@ -76,6 +79,19 @@ class HomeScreen extends PureComponent {
             <Text style={styles.tileTitle}>Create Guard Account</Text>
             <Text style={styles.tileDescription}>
               Create a account for guard's access
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('AdminUpdateStudentPhone', {
+                token: this.props.token,
+              });
+            }}>
+            <Text style={styles.tileTitle}>Update Student Details</Text>
+            <Text style={styles.tileDescription}>
+              Update student details like student's phone number and parent's
+              phone number
             </Text>
           </TouchableOpacity>
         </View>

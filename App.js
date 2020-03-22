@@ -16,7 +16,9 @@ import RegisterGuard from './src/screens/Admin/RegisterGuard';
 import RegisterTeacher from './src/screens/Admin/RegisterTeacher';
 import AdminOutingRequests from './src/screens/Admin/ViewOutingRequests';
 import AdminLeaveRequests from './src/screens/Admin/ViewLeaveRequests';
-import AdminAttendance from './src/screens/Admin/ViewAttendance';
+import AdminViewAttendanceForm from './src/screens/Admin/ViewAttendanceForm';
+import AdminViewAttendance from './src/screens/Admin/ViewAttendance';
+import AdminUpdateStudentPhone from './src/screens/Admin/UpdateStudentPhone';
 //Stduent Screens
 import StudentScanAttendance from './src/screens/Student/ScanAttendance';
 import StudentSmartAttendance from './src/screens/Student/SmartAttendance';
@@ -178,6 +180,19 @@ const teacherGenerateCodeNavigator = createStackNavigator(
   },
   {initialRouteName: 'TeacherCreateAttendance', headerMode: 'none'},
 );
+
+//Admin view attenadance stack navigator
+const adminAttendanceNavigator = createStackNavigator(
+  {
+    AdminViewAttendanceForm: {
+      screen: AdminViewAttendanceForm,
+    },
+    AdminViewAttendance: {
+      screen: AdminViewAttendance,
+    },
+  },
+  {initialRouteName: 'AdminViewAttendanceForm', headerMode: 'none'},
+);
 const HomeStackNavigator = createStackNavigator(
   {
     Home: {
@@ -189,8 +204,12 @@ const HomeStackNavigator = createStackNavigator(
       navigationOptions: {title: 'Leave/Outing Requests'},
     },
     AdminAttendance: {
-      screen: AdminAttendance,
+      screen: adminAttendanceNavigator,
       navigationOptions: {title: 'Admin View Attendance'},
+    },
+    AdminUpdateStudentPhone: {
+      screen: AdminUpdateStudentPhone,
+      navigationOptions: {title: 'Update Student Details'},
     },
     RegisterGuard: {
       screen: RegisterGuard,

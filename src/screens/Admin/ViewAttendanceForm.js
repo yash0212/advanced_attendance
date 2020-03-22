@@ -11,7 +11,7 @@ import {
 import Snackbar from 'react-native-snackbar';
 import apiUri from '../../config/api';
 
-class CreateAttendance extends PureComponent {
+class ViewAttendanceForm extends PureComponent {
   state = {
     lectureNumber: '2',
     subjectId: 1,
@@ -52,16 +52,10 @@ class CreateAttendance extends PureComponent {
       <Picker.Item key={i} label={x.name} value={x.id} />
     ));
   };
-  _displayCode = () => {
-    this.props.navigation.navigate('TeacherDisplayCode', {
+  _viewAttendance = () => {
+    this.props.navigation.navigate('AdminViewAttendance', {
       uid: this.props.navigation.getParam('uid'),
-      data: this.state,
-    });
-  };
-  _chirp = () => {
-    this.props.navigation.navigate('TeacherChirp', {
       token: this.props.navigation.getParam('token'),
-      uid: this.props.navigation.getParam('uid'),
       data: this.state,
     });
   };
@@ -191,16 +185,9 @@ class CreateAttendance extends PureComponent {
           <TouchableOpacity
             style={styles.createButton}
             onPress={() => {
-              this._displayCode();
+              this._viewAttendance();
             }}>
-            <Text style={styles.submitBtn}>Display Code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={() => {
-              this._chirp();
-            }}>
-            <Text style={styles.submitBtn}>Chirp On</Text>
+            <Text style={styles.submitBtn}>View Attendance</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -291,4 +278,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateAttendance;
+export default ViewAttendanceForm;
