@@ -71,6 +71,7 @@ class SmartAttendance extends PureComponent {
       dept,
       sec,
       year,
+      0,
     );
 
     fetch(apiUri + '/api/student-mark-attendance', {

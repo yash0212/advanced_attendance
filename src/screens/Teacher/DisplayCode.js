@@ -50,6 +50,7 @@ class DisplayCode extends PureComponent {
       departmentId,
       section,
       year,
+      1,
     );
   };
   renderCode() {
