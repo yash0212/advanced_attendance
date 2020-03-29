@@ -14,6 +14,7 @@ class UpdateStudentPhone extends PureComponent {
     regno: '',
     s_phno: '',
     p_phno: '',
+    p_email: '',
     loading: false,
   };
   constructor(props) {
@@ -34,6 +35,11 @@ class UpdateStudentPhone extends PureComponent {
       p_phno: p_phno,
     });
   }
+  handleParentEmail(email) {
+    this.setState({
+      p_email: email,
+    });
+  }
   updateDetails = () => {
     this.setState({loading: true});
     fetch(apiUri + '/api/update-student-phone-number', {
@@ -47,6 +53,7 @@ class UpdateStudentPhone extends PureComponent {
         regno: this.state.regno,
         student_phone_number: this.state.s_phno,
         parent_phone_number: this.state.p_phno,
+        parent_email: this.state.p_email,
       }),
     })
       .then(resp => resp.json())
@@ -60,6 +67,7 @@ class UpdateStudentPhone extends PureComponent {
             regno: '',
             s_phno: '',
             p_phno: '',
+            p_email: '',
             loading: false,
           });
         } else {
@@ -116,6 +124,20 @@ class UpdateStudentPhone extends PureComponent {
             ref={input => {
               this.pphnoInput = input;
             }}
+            onSubmitEditing={() => {
+              this.pEmail.focus();
+            }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            onChangeText={text => this.handleParentEmail(text)}
+            value={this.state.p_email}
+            style={styles.pemail}
+            placeholder="Parent's email"
+            returnKeyType="go"
+            ref={input => {
+              this.pEmail = input;
+            }}
           />
           <TouchableOpacity
             style={styles.updateButton}
@@ -164,6 +186,15 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   pphno: {
+    backgroundColor: '#ffffff',
+    color: '#072b3e',
+    fontSize: 20,
+    minWidth: '100%',
+    marginBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  pemail: {
     backgroundColor: '#ffffff',
     color: '#072b3e',
     fontSize: 20,

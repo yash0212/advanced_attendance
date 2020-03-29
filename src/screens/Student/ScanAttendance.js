@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import apiUri from '../../config/api';
+import Snackbar from 'react-native-snackbar';
 
 class ScanAttendance extends PureComponent {
   state = {
@@ -27,7 +29,44 @@ class ScanAttendance extends PureComponent {
           return response.json();
         })
         .then(function(serverData) {
-          console.log('data: ', serverData);
+          console.log('data from server: ', serverData);
+          fetch(apiUri + '/api/student-mark-attendance', {
+            method: 'post',
+            headers: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              Authorization:
+                'Bearer ' + this.props.navigation.getParam('token'),
+            },
+            body: JSON.stringify({
+              code: serverData,
+            }),
+          })
+            .then(resp => {
+              if (resp.status === 401) {
+                Snackbar.show({
+                  text: 'Please login again to continue',
+                  duration: Snackbar.LENGTH_LONG,
+                });
+                this.props.navigation.navigate('Login');
+              } else {
+                return resp.json();
+              }
+            })
+            .then(attendanceMarkedResp => {
+              if (attendanceMarkedResp.status === 'success') {
+                Snackbar.show({
+                  text: attendanceMarkedResp.msg,
+                  duration: Snackbar.LENGTH_LONG,
+                });
+                this.setState({
+                  attendanceMarked: true,
+                });
+              }
+            })
+            .catch(err => {
+              console.log(err, err.message);
+            });
         })
         .catch(err => {
           console.log(err, err.message);

@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
+import Encrypto from '../../helpers/Encrypto';
 
 class DisplayCode extends PureComponent {
   constructor(props) {
@@ -17,26 +18,18 @@ class DisplayCode extends PureComponent {
           this.props.navigation.getParam('type'),
         ),
       });
-    }, 2000);
+    }, 5000);
   }
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  generateCode(id, type) {
-    var result = '';
-    var characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < 100; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-    return 'IP3Qy89Aa06BuFbPq0eNakpr6s3pJ%4lUuVUHwd8vf6IuI1eLJ2uxKGKS5MtECJljV888e2HZdhcbzBeiNtTXw7v23hQrKcV76QP';
-  }
+  generateCode = (id, type) => {
+    let enc = new Encrypto();
+    return enc.getCode(type, id);
+  };
   renderCode() {
     let code = this.state.code;
     var arr = [];
-    var res;
     for (let i = 0; i < 10; i++) {
       arr.push([
         code.slice(i * 10, i * 10 + 5),

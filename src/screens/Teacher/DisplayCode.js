@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
+import Encrypto from '../../helpers/Encrypto';
 
 class DisplayCode extends PureComponent {
   constructor(props) {
@@ -25,12 +26,12 @@ class DisplayCode extends PureComponent {
           data.year,
         ),
       });
-    }, 2000);
+    }, 10000);
   }
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  generateCode(
+  generateCode = (
     lectureNumber,
     subjectId,
     uid,
@@ -38,22 +39,23 @@ class DisplayCode extends PureComponent {
     departmentId,
     section,
     year,
-  ) {
-    var result = '';
-    var characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < 100; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-    return 'IP3Qy89Aa06BuFbPq0eNakpr6s3pJ%4lUuVUHwd8vf6IuI1eLJ2uxKGKS5MtECJljV888e2HZdhcbzBeiNtTXw7v23hQrKcV76QP';
-  }
+  ) => {
+    let enc = new Encrypto();
+
+    return enc.getCode(
+      lectureNumber,
+      subjectId,
+      uid,
+      degreeId,
+      departmentId,
+      section,
+      year,
+    );
+  };
   renderCode() {
     let code = this.state.code;
     // console.log('code', code);
     var arr = [];
-    var res;
     for (let i = 0; i < 10; i++) {
       arr.push([
         code.slice(i * 10, i * 10 + 5),

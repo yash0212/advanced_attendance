@@ -12,6 +12,7 @@ import {NativeEventEmitter, NativeModules} from 'react-native';
 import Permissions, {PERMISSIONS} from 'react-native-permissions';
 import apiUri from '../../config/api';
 import Snackbar from 'react-native-snackbar';
+import Encrypto from '../../helpers/Encrypto';
 
 const ChirpSDK = NativeModules.ChirpSDK;
 const ChirpSDKEmitter = new NativeEventEmitter(ChirpSDK);
@@ -51,6 +52,7 @@ class SmartAttendance extends PureComponent {
     }
   }
   _markAttendance = data => {
+    let enc = new Encrypto();
     let lectureNumber = data[0];
     let subject = data[1];
     let teacherId = data[2];
@@ -61,9 +63,16 @@ class SmartAttendance extends PureComponent {
     let year = data[6];
 
     // lecture_no, subject_id, teacher_id, degree, department, section, year
-    var hash =
-      'MMnta98We1N%6h3r11MP@6wpl48NOV@3NNM%7ei1iR0M#5U7i6N#4ZCVP%8ZOkgLNhdq8p2x7b0e1NHvK0Ku1rOCa7C7t20knDOO';
-    // var hash = '';
+    var hash = enc.getCode(
+      lectureNumber,
+      subject,
+      teacherId,
+      degree,
+      dept,
+      sec,
+      year,
+    );
+
     fetch(apiUri + '/api/student-mark-attendance', {
       method: 'post',
       headers: {
