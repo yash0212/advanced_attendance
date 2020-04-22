@@ -31,10 +31,7 @@ class DisplayCode extends PureComponent {
   }
   generateCode = (id, type) => {
     let enc = new Encrypto();
-    console.log('type: ', type);
-    console.log('id: ', id);
     let hash = enc.getCode(type, id);
-    console.log('hash: ', hash);
     return hash;
   };
   renderCode() {

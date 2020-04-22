@@ -7,7 +7,7 @@ export default class Encrypto {
     // this.loc = 12
     // this.rev = 0
     this.letterCycle =
-      'abdefghijkmnqrty123456789ABDEFGHJKLMNQRTYabdefghijkmnqrty';
+      'abdefghijkmnqrty1234567890ABDEFGHJKLMNQRTYabdefghijkmnqrty';
     this.spchr = '@#$%';
     this.randArr =
       '1234567890qwertyuioplkjhgfdsazxcvbnm1234567890POIUYTREWQASDFGHJKLMNBVCXZ';

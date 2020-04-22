@@ -59,7 +59,7 @@ class SmartAttendance extends PureComponent {
     let degree = data[3];
     let dept = data[4];
     let sec = data[5];
-    // sec = String.fromCharCode('A'.charCodeAt(0) + sec - 1);
+    sec = String.fromCharCode('A'.charCodeAt(0) + sec - 1);
     let year = data[6];
 
     // lecture_no, subject_id, teacher_id, degree, department, section, year
