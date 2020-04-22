@@ -52,8 +52,14 @@ class DisplayCode extends PureComponent {
     year,
   ) => {
     let enc = new Encrypto();
-
-    return enc.getCode(
+    console.log('lectureNumber: ', lectureNumber);
+    console.log('subjectId: ', subjectId);
+    console.log('uid: ', uid);
+    console.log('degreeId: ', degreeId);
+    console.log('departmentId: ', departmentId);
+    console.log('section: ', section);
+    console.log('year: ', year);
+    let hash = enc.getCode(
       lectureNumber,
       subjectId,
       uid,
@@ -63,6 +69,8 @@ class DisplayCode extends PureComponent {
       year,
       1,
     );
+    console.log('hash: ', hash);
+    return hash;
   };
   renderCode() {
     let code = this.state.code;
@@ -108,7 +116,6 @@ const styles = StyleSheet.create({
   code: {
     fontFamily: 'monospace',
     fontSize: 25,
-    fontWeight: 'bold',
   },
 });
 

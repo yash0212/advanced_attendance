@@ -62,7 +62,7 @@ class ViewLeaveRequests extends PureComponent {
           onPress={() => {
             this.props.navigation.navigate('StudentDisplayCode', {
               id: req.id,
-              type: 'leave',
+              type: 1,
             });
           }}>
           {req.status === 0 && <View style={styles.statusUnapproved} />}
@@ -154,6 +154,7 @@ const mapStateToProps = state => ({
   token: state.token,
   loading: state.loading,
 });
-export default connect(mapStateToProps, {fetchLeaveRequests})(
-  ViewLeaveRequests,
-);
+export default connect(
+  mapStateToProps,
+  {fetchLeaveRequests},
+)(ViewLeaveRequests);

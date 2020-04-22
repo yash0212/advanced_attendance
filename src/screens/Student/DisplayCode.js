@@ -11,6 +11,12 @@ class DisplayCode extends PureComponent {
     code: '',
   };
   componentDidMount() {
+    this.setState({
+      code: this.generateCode(
+        this.props.navigation.getParam('id'),
+        this.props.navigation.getParam('type'),
+      ),
+    });
     this.timer = setInterval(() => {
       this.setState({
         code: this.generateCode(
@@ -25,7 +31,11 @@ class DisplayCode extends PureComponent {
   }
   generateCode = (id, type) => {
     let enc = new Encrypto();
-    return enc.getCode(type, id);
+    console.log('type: ', type);
+    console.log('id: ', id);
+    let hash = enc.getCode(type, id);
+    console.log('hash: ', hash);
+    return hash;
   };
   renderCode() {
     let code = this.state.code;
@@ -70,7 +80,6 @@ const styles = StyleSheet.create({
   code: {
     fontFamily: 'monospace',
     fontSize: 25,
-    fontWeight: 'bold',
   },
 });
 
@@ -81,4 +90,7 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 // export default connect(mapStateToProps, {fetchLeaveRequests})(DisplayCode);
-export default connect(null, null)(DisplayCode);
+export default connect(
+  null,
+  null,
+)(DisplayCode);

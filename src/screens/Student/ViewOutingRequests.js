@@ -62,7 +62,7 @@ class ViewOutingRequests extends PureComponent {
           onPress={() => {
             this.props.navigation.navigate('StudentDisplayCode', {
               id: req.id,
-              type: 'outing',
+              type: 0,
             });
           }}>
           {req.status === 0 && <View style={styles.statusUnapproved} />}
@@ -164,6 +164,7 @@ const mapStateToProps = state => ({
   token: state.token,
   loading: state.loading,
 });
-export default connect(mapStateToProps, {fetchOutingRequests})(
-  ViewOutingRequests,
-);
+export default connect(
+  mapStateToProps,
+  {fetchOutingRequests},
+)(ViewOutingRequests);

@@ -59,7 +59,7 @@ class SmartAttendance extends PureComponent {
     let degree = data[3];
     let dept = data[4];
     let sec = data[5];
-    sec = String.fromCharCode('A'.charCodeAt(0) + sec - 1);
+    // sec = String.fromCharCode('A'.charCodeAt(0) + sec - 1);
     let year = data[6];
 
     // lecture_no, subject_id, teacher_id, degree, department, section, year
@@ -73,7 +73,6 @@ class SmartAttendance extends PureComponent {
       year,
       0,
     );
-
     fetch(apiUri + '/api/student-mark-attendance', {
       method: 'post',
       headers: {
@@ -85,7 +84,7 @@ class SmartAttendance extends PureComponent {
         code: hash,
       }),
     })
-      .then(resp => {
+      .then(async resp => {
         if (resp.status === 401) {
           Snackbar.show({
             text: 'Please login again to continue',
@@ -98,6 +97,14 @@ class SmartAttendance extends PureComponent {
       })
       .then(attendanceMarkedResp => {
         if (attendanceMarkedResp.status === 'success') {
+          try {
+            ChirpSDK.stop();
+            this.onReceived.remove();
+            this.onError.remove();
+            clearInterval(this.timer);
+          } catch (error) {
+            console.log(error);
+          }
           Snackbar.show({
             text: attendanceMarkedResp.msg,
             duration: Snackbar.LENGTH_LONG,
@@ -112,10 +119,14 @@ class SmartAttendance extends PureComponent {
       });
   };
   componentWillUnmount() {
-    ChirpSDK.stop();
-    this.onReceived.remove();
-    this.onError.remove();
-    clearInterval(this.timer);
+    try {
+      ChirpSDK.stop();
+      this.onReceived.remove();
+      this.onError.remove();
+      clearInterval(this.timer);
+    } catch (error) {
+      console.log(error);
+    }
   }
   render() {
     if (this.state.attendanceMarked) {

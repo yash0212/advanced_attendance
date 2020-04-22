@@ -71,6 +71,15 @@ class Chirp extends PureComponent {
         ChirpSDK.init(key, secret);
         ChirpSDK.setConfig(config);
         ChirpSDK.start();
+        ChirpSDK.send([
+          lectureNumber,
+          subject,
+          teacherId,
+          degree,
+          dept,
+          sec,
+          year,
+        ]);
       }
     } catch (error) {
       console.log('component did mount: ', error);

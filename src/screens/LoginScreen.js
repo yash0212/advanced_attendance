@@ -11,6 +11,8 @@ import {connect} from 'react-redux';
 import {loginUser} from '../redux/actions';
 import Message from '../components/Message';
 import {getUniqueId} from 'react-native-device-info';
+import Encrypto from '../helpers/Encrypto';
+
 class LoginScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -48,8 +50,9 @@ class LoginScreen extends PureComponent {
   }
   _login = async () => {
     let deviceHash = getUniqueId();
-    deviceHash =
-      'OINPlSTKP16cTXv9kFTR2FAaewTQKKOOuwKLsuLNQw$4u286iEr3wSRvuTu9YzenUJ60oNA85mRgimJo0x5Bly1f1U3UTDiv1vPP';
+    let enc = new Encrypto();
+
+    deviceHash = enc.getCode(deviceHash);
     this.props.loginUser(this.state.email, this.state.password, deviceHash);
   };
   render() {
@@ -179,4 +182,7 @@ const mapStateToProps = state => ({
   msg: state.loginMsg,
   msgType: state.loginMsgType,
 });
-export default connect(mapStateToProps, {loginUser})(LoginScreen);
+export default connect(
+  mapStateToProps,
+  {loginUser},
+)(LoginScreen);

@@ -8,8 +8,11 @@ import Snackbar from 'react-native-snackbar';
 class ScanAttendance extends PureComponent {
   state = {
     flashEnabled: 0,
+    loading: false,
   };
   takePicture = async () => {
+    var screenProps = this.props;
+    var token = this.props.navigation.getParam('token');
     if (this.camera) {
       const options = {
         quality: 0.5,
@@ -18,6 +21,7 @@ class ScanAttendance extends PureComponent {
         fixOrientation: true,
       };
       const data = await this.camera.takePictureAsync(options);
+      this.setState({loading: true});
       fetch('https://dizpw6y7m8.execute-api.ap-south-1.amazonaws.com/prod/', {
         method: 'post',
         headers: {
@@ -25,21 +29,22 @@ class ScanAttendance extends PureComponent {
         },
         body: JSON.stringify({imageData: data.base64}),
       })
-        .then(function(response) {
+        .then(response => {
           return response.json();
         })
-        .then(function(serverData) {
+        .then(serverData => {
           console.log('data from server: ', serverData);
+          console.log('hash: ', serverData.hash);
+          console.log('hashlength: ', serverData.hash.length);
           fetch(apiUri + '/api/student-mark-attendance', {
             method: 'post',
             headers: {
               accept: 'application/json',
               'content-type': 'application/json',
-              Authorization:
-                'Bearer ' + this.props.navigation.getParam('token'),
+              Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-              code: serverData,
+              code: serverData.hash,
             }),
           })
             .then(resp => {
@@ -48,12 +53,13 @@ class ScanAttendance extends PureComponent {
                   text: 'Please login again to continue',
                   duration: Snackbar.LENGTH_LONG,
                 });
-                this.props.navigation.navigate('Login');
+                screenProps.navigation.navigate('Login');
               } else {
                 return resp.json();
               }
             })
             .then(attendanceMarkedResp => {
+              console.log(attendanceMarkedResp);
               if (attendanceMarkedResp.status === 'success') {
                 Snackbar.show({
                   text: attendanceMarkedResp.msg,
@@ -61,10 +67,21 @@ class ScanAttendance extends PureComponent {
                 });
                 this.setState({
                   attendanceMarked: true,
+                  loading: false,
+                });
+              } else {
+                Snackbar.show({
+                  text: attendanceMarkedResp.msg,
+                  duration: Snackbar.LENGTH_LONG,
+                });
+                this.setState({
+                  attendanceMarked: false,
+                  loading: false,
                 });
               }
             })
             .catch(err => {
+              console.log('error aya');
               console.log(err, err.message);
             });
         })
@@ -132,7 +149,8 @@ class ScanAttendance extends PureComponent {
         <View>
           <TouchableOpacity
             onPress={this.takePicture.bind(this)}
-            style={styles.capture}>
+            style={styles.capture}
+            disabled={this.state.loading}>
             <Text style={{fontSize: 14}}> SNAP </Text>
           </TouchableOpacity>
         </View>

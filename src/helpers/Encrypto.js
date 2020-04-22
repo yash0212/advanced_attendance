@@ -1,10 +1,13 @@
 export default class Encrypto {
   constructor() {
-    this.key = Math.floor(Math.random() * (25 - 16)) + 16;
+    this.key = Math.floor(Math.random() * (16 - 10)) + 10;
     this.loc = Math.floor(Math.random() * (30 - 11)) + 11;
-    this.rev = Math.round(Math.random());
+    this.rev = Math.round(Math.random() * (3 - 2)) + 2;
+    // this.key = 17
+    // this.loc = 12
+    // this.rev = 0
     this.letterCycle =
-      'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      'abdefghijkmnqrty123456789ABDEFGHJKLMNQRTYabdefghijkmnqrty';
     this.spchr = '@#$%';
     this.randArr =
       '1234567890qwertyuioplkjhgfdsazxcvbnm1234567890POIUYTREWQASDFGHJKLMNBVCXZ';
@@ -41,7 +44,8 @@ export default class Encrypto {
     return res;
   }
   createMat(data) {
-    let mat = new Array(100).fill('*');
+    let mat = [];
+    // let mat = new Array(100).fill('*');
     for (let i = 0; i < 100; i++) {
       mat[i] = this.randArr[Math.floor(Math.random() * 72)];
     }
@@ -65,8 +69,8 @@ export default class Encrypto {
     k =
       String.fromCharCode(loc.join('').charCodeAt(1) + parseInt(k[0])) +
       String.fromCharCode(loc.join('').charCodeAt(0) + parseInt(k[1]));
-    mat[0] = this.rev == 0 ? loc[0] : loc[1];
-    mat[1] = this.rev == 0 ? loc[1] : loc[0];
+    mat[0] = this.rev == 2 ? loc[0] : loc[1];
+    mat[1] = this.rev == 2 ? loc[1] : loc[0];
     mat[9] = this.rev;
     mat[98] = k[0];
     mat[99] = k[1];
