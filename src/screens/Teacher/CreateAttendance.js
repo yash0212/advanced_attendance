@@ -93,7 +93,7 @@ class CreateAttendance extends PureComponent {
       degreesResp = await degreesResp.json();
       if (degreesResp.status === 'success') {
         this.setState({
-          degreeId: degreesResp.data[0].id,
+          degreeId: degreesResp.data[0].id.toString(),
           degrees: degreesResp.data,
         });
       } else {
@@ -111,7 +111,7 @@ class CreateAttendance extends PureComponent {
       departmentsResp = await departmentsResp.json();
       if (departmentsResp.status === 'success') {
         this.setState({
-          departmentId: departmentsResp.data[0].id,
+          departmentId: departmentsResp.data[0].id.toString(),
           departments: departmentsResp.data,
         });
       } else {

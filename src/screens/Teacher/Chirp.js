@@ -29,154 +29,186 @@ class Chirp extends PureComponent {
     studentDetails: [],
     refreshList: true,
     loading: false,
+    disableSubmit: false,
   };
   constructor(props) {
     super(props);
   }
   async componentDidMount() {
-    this.fetchStudents();
-    const response = await Permissions.check(PERMISSIONS.ANDROID.RECORD_AUDIO);
-    if (response !== 'authorized') {
-      await Permissions.request(PERMISSIONS.ANDROID.RECORD_AUDIO);
-    }
-    if (response === 'granted') {
-      this.onError = ChirpSDKEmitter.addListener('onError', event => {
-        console.warn(event.message);
-      });
-      let data = this.props.navigation.getParam('data');
-      let lectureNumber = parseInt(data.lectureNumber);
-      let subject = data.subjectId;
-      let teacherId = this.props.navigation.getParam('uid');
-      let degree = data.degreeId;
-      let dept = data.departmentId;
-      let sec = data.section.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
-      let year = data.year;
+    try {
+      this.fetchStudents();
+      const response = await Permissions.check(
+        PERMISSIONS.ANDROID.RECORD_AUDIO,
+      );
+      if (response !== 'authorized') {
+        await Permissions.request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+      }
+      if (response === 'granted') {
+        this.onError = ChirpSDKEmitter.addListener('onError', event => {
+          console.warn(event.message);
+        });
+        let data = this.props.navigation.getParam('data');
+        let lectureNumber = parseInt(data.lectureNumber);
+        let subject = parseInt(data.subjectId);
+        let teacherId = this.props.navigation.getParam('uid');
+        let degree = parseInt(data.degreeId);
+        let dept = parseInt(data.departmentId);
+        let sec = data.section.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+        let year = data.year;
 
-      this.timer = setInterval(() => {
-        ChirpSDK.send([
-          lectureNumber,
-          subject,
-          teacherId,
-          degree,
-          dept,
-          sec,
-          year,
-        ]);
-      }, 7000);
+        this.timer = setInterval(() => {
+          ChirpSDK.send([
+            lectureNumber,
+            subject,
+            teacherId,
+            degree,
+            dept,
+            sec,
+            year,
+          ]);
+        }, 7000);
 
-      ChirpSDK.init(key, secret);
-      ChirpSDK.setConfig(config);
-      ChirpSDK.start();
+        ChirpSDK.init(key, secret);
+        ChirpSDK.setConfig(config);
+        ChirpSDK.start();
+      }
+    } catch (error) {
+      console.log('component did mount: ', error);
     }
   }
   fetchStudents = () => {
-    this.setState({loading: true});
-    let data = this.props.navigation.getParam('data');
-    fetch(apiUri + '/api/fetch-students-detail', {
-      method: 'post',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
-      },
-      body: JSON.stringify({
-        degree: data.degreeId,
-        department: data.departmentId,
-        section: data.section,
-        year: data.year,
-        subject_code: data.subjectId,
-        lecture_no: data.lectureNumber,
-      }),
-    })
-      .then(resp => resp.json())
-      .then(studentDataResp => {
-        if (studentDataResp.status === 'success') {
-          let studentsData = [...studentDataResp.attendance_data];
+    try {
+      this.setState({loading: true});
+      let data = this.props.navigation.getParam('data');
+      fetch(apiUri + '/api/fetch-students-detail', {
+        method: 'post',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
+        },
+        body: JSON.stringify({
+          degree: data.degreeId,
+          department: data.departmentId,
+          section: data.section,
+          year: data.year,
+          subject_code: data.subjectId,
+          lecture_no: data.lectureNumber,
+        }),
+      })
+        .then(resp => resp.json())
+        .then(studentDataResp => {
+          if (studentDataResp.status === 'success') {
+            let studentsData = [...studentDataResp.attendance_data];
+            this.setState({
+              studentDetails: studentsData,
+              refreshList: !this.state.refreshList,
+              loading: false,
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err, err.message);
           this.setState({
-            studentDetails: studentsData,
-            refreshList: !this.state.refreshList,
             loading: false,
           });
-        }
-      })
-      .catch(err => {
-        console.log(err, err.message);
-        this.setState({
-          loading: false,
         });
-      });
+    } catch (error) {
+      console.log('fetch students: ', error);
+    }
   };
   toggleAttendance = student => {
-    var attendance = this.state.studentDetails;
-    attendance.forEach((x, i) => {
-      if (x.student_id === student.student_id) {
-        attendance[i].attendance_status =
-          student.attendance_status === 1 ? 0 : 1;
-      }
-    });
-    this.setState({
-      studentDetails: attendance,
-      refreshList: !this.state.refreshList,
-    });
+    try {
+      var attendance = this.state.studentDetails;
+      attendance.forEach((x, i) => {
+        if (x.student_id === student.student_id) {
+          attendance[i].attendance_status =
+            student.attendance_status === 1 ? 0 : 1;
+        }
+      });
+      this.setState({
+        studentDetails: attendance,
+        refreshList: !this.state.refreshList,
+      });
+    } catch (error) {
+      console.log('toggle attendance: ', error);
+    }
   };
   renderStudentList = (student, index) => {
-    return (
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            this.toggleAttendance(student);
-          }}
-          style={
-            student.attendance_status === 0
-              ? styles.studentTileAbsent
-              : styles.studentTilePresent
-          }>
-          <Text style={styles.studentName}>{student.name}</Text>
-          <Text style={styles.studentRegno}>{student.regno}</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    try {
+      return (
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              this.toggleAttendance(student);
+            }}
+            style={
+              student.attendance_status === 0
+                ? styles.studentTileAbsent
+                : styles.studentTilePresent
+            }>
+            <Text style={styles.studentName}>{student.name}</Text>
+            <Text style={styles.studentRegno}>{student.regno}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } catch (error) {
+      console.log('renderstudentlist: ', error);
+    }
   };
   submitAttendance = () => {
-    let data = this.props.navigation.getParam('data');
-    fetch(apiUri + '/api/teacher-submit-attendance', {
-      method: 'post',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
-      },
-      body: JSON.stringify({
-        degree: data.degreeId,
-        department: data.departmentId,
-        subject_code: data.subjectId,
-        section: data.section,
-        year: data.year,
-        lecture_number: data.lectureNumber,
-        attendance_data: this.state.studentDetails,
-      }),
-    })
-      .then(resp => resp.json())
-      .then(attResponse => {
-        if (attResponse.status === 'success') {
-          Snackbar.show({
-            text: attResponse.msg,
-            duration: Snackbar.LENGTH_LONG,
-          });
-        } else {
-          console.log('Submit attendance api failed: ', attResponse);
-          Snackbar.show({
-            text: 'Marking attendance failed. Please try again',
-            duration: Snackbar.LENGTH_LONG,
-          });
-        }
+    try {
+      let data = this.props.navigation.getParam('data');
+      console.log('attendance mark response sent');
+      this.setState({disableSubmit: true});
+      fetch(apiUri + '/api/teacher-submit-attendance', {
+        method: 'post',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          Authorization: 'Bearer ' + this.props.navigation.getParam('token'),
+        },
+        body: JSON.stringify({
+          degree: data.degreeId,
+          department: data.departmentId,
+          subject_code: data.subjectId,
+          section: data.section,
+          year: data.year,
+          lecture_number: data.lectureNumber,
+          attendance_data: this.state.studentDetails,
+        }),
       })
-      .catch(err => {
-        console.log(err, err.message);
-      });
+        .then(resp => {
+          return resp.json();
+        })
+        .then(attResponse => {
+          if (attResponse.status === 'success') {
+            Snackbar.show({
+              text: attResponse.msg,
+              duration: Snackbar.LENGTH_LONG,
+            });
+          } else {
+            console.log('Submit attendance api failed: ', attResponse);
+            Snackbar.show({
+              text: 'Marking attendance failed. Please try again',
+              duration: Snackbar.LENGTH_LONG,
+            });
+          }
+          this.setState({disableSubmit: false});
+        })
+        .catch(err => {
+          console.log(err, err.message);
+        });
+    } catch (error) {
+      console.log('submit attendance: ', error);
+    }
   };
   componentWillUnmount() {
-    ChirpSDK.stop();
+    try {
+      ChirpSDK.stop();
+    } catch (error) {
+      console.log(error);
+    }
     // this.onReceived.remove();
     this.onError.remove();
     clearInterval(this.timer);
@@ -199,7 +231,8 @@ class Chirp extends PureComponent {
         />
         <TouchableOpacity
           style={styles.submitBtn}
-          onPress={() => this.submitAttendance()}>
+          onPress={() => this.submitAttendance()}
+          disabled={this.state.disableSubmit}>
           <Text style={styles.submitBtnText}>Submit Attendance</Text>
         </TouchableOpacity>
       </View>
