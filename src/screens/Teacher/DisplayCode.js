@@ -14,6 +14,17 @@ class DisplayCode extends PureComponent {
     let uid = this.props.navigation.getParam('uid');
     let data = this.props.navigation.getParam('data');
 
+    this.setState({
+      code: this.generateCode(
+        data.lectureNumber,
+        data.subjectId,
+        uid,
+        data.degreeId,
+        data.departmentId,
+        data.section,
+        data.year,
+      ),
+    });
     this.timer = setInterval(() => {
       this.setState({
         code: this.generateCode(
@@ -108,4 +119,7 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 // export default connect(mapStateToProps, {fetchLeaveRequests})(DisplayCode);
-export default connect(null, null)(DisplayCode);
+export default connect(
+  null,
+  null,
+)(DisplayCode);
