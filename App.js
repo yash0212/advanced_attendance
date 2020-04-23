@@ -19,6 +19,7 @@ import AdminLeaveRequests from './src/screens/Admin/ViewLeaveRequests';
 import AdminViewAttendanceForm from './src/screens/Admin/ViewAttendanceForm';
 import AdminViewAttendance from './src/screens/Admin/ViewAttendance';
 import AdminUpdateStudentPhone from './src/screens/Admin/UpdateStudentPhone';
+import AdminStudentNotInCampus from './src/screens/Admin/AdminStudentNotInCampus';
 //Stduent Screens
 import StudentScanAttendance from './src/screens/Student/ScanAttendance';
 import StudentSmartAttendance from './src/screens/Student/SmartAttendance';
@@ -210,6 +211,10 @@ const HomeStackNavigator = createStackNavigator(
     AdminUpdateStudentPhone: {
       screen: AdminUpdateStudentPhone,
       navigationOptions: {title: 'Update Student Details'},
+    },
+    AdminStudentNotInCampus: {
+      screen: AdminStudentNotInCampus,
+      navigationOptions: {title: 'Students not in campus'},
     },
     RegisterGuard: {
       screen: RegisterGuard,

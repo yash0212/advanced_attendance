@@ -88,10 +88,23 @@ class HomeScreen extends PureComponent {
                 token: this.props.token,
               });
             }}>
-            <Text style={styles.tileTitle}>Update Student Details</Text>
+            <Text style={styles.tileTitle}>Create/Update Student Details</Text>
             <Text style={styles.tileDescription}>
-              Update student details like student's phone number and parent's
-              phone number
+              Create or Update student extra details like student's phone number
+              and parent's phone number
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
+              this.props.navigation.navigate('AdminStudentNotInCampus', {
+                token: this.props.token,
+              });
+            }}>
+            <Text style={styles.tileTitle}>Student Not in campus list</Text>
+            <Text style={styles.tileDescription}>
+              View the list of student those are not in campus, maybe they are
+              on leave or outing
             </Text>
           </TouchableOpacity>
         </View>
