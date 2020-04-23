@@ -86,7 +86,10 @@ class ViewAttendanceForm extends PureComponent {
       });
       degreesResp = await degreesResp.json();
       if (degreesResp.status === 'success') {
-        this.setState({degrees: degreesResp.data});
+        this.setState({
+          degreeId: degreesResp.data[0].id,
+          degrees: degreesResp.data,
+        });
       } else {
         throw 'Fetch degree api error';
       }
@@ -101,7 +104,10 @@ class ViewAttendanceForm extends PureComponent {
       });
       departmentsResp = await departmentsResp.json();
       if (departmentsResp.status === 'success') {
-        this.setState({departments: departmentsResp.data});
+        this.setState({
+          departmentId: departmentsResp.data[0].id,
+          departments: departmentsResp.data,
+        });
       } else {
         throw 'Fetch department api error';
       }

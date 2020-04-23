@@ -15,6 +15,7 @@ class DisplayCode extends PureComponent {
       code: this.generateCode(
         this.props.navigation.getParam('id'),
         this.props.navigation.getParam('type'),
+        this.props.navigation.getParam('qrType'),
       ),
     });
     this.timer = setInterval(() => {
@@ -22,6 +23,7 @@ class DisplayCode extends PureComponent {
         code: this.generateCode(
           this.props.navigation.getParam('id'),
           this.props.navigation.getParam('type'),
+          this.props.navigation.getParam('qrType'),
         ),
       });
     }, 5000);
@@ -29,9 +31,9 @@ class DisplayCode extends PureComponent {
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  generateCode = (id, type) => {
+  generateCode = (id, type, qrType) => {
     let enc = new Encrypto();
-    let hash = enc.getCode(type, id);
+    let hash = enc.getCode(type, id, qrType);
     return hash;
   };
   renderCode() {

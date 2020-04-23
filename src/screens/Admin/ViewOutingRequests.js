@@ -70,6 +70,12 @@ class ViewOutingRequests extends PureComponent {
       case 2:
         status = 'Rejected';
         break;
+      case 3:
+        status = 'Scanned';
+        break;
+      case 4:
+        status = 'Completed';
+        break;
       default:
         status = 'Unknown';
         break;
@@ -97,6 +103,8 @@ class ViewOutingRequests extends PureComponent {
           {req.status === 0 && <View style={styles.statusUnapproved} />}
           {req.status === 1 && <View style={styles.statusApproved} />}
           {req.status === 2 && <View style={styles.statusRejected} />}
+          {req.status === 3 && <View style={styles.statusScanned} />}
+          {req.status === 4 && <View style={styles.statusCompleted} />}
           {status === 'Unknown' && <View style={styles.statusUnknown} />}
           <View style={styles.requestContent}>
             <Text>Applied By: {req.applied_by.name}</Text>
@@ -212,6 +220,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     width: 10,
   },
+  statusScanned: {
+    backgroundColor: 'yellow',
+    width: 10,
+  },
+  statusCompleted: {
+    backgroundColor: 'blue',
+    width: 10,
+  },
   requestContent: {
     padding: 10,
     paddingHorizontal: 15,
@@ -242,8 +258,11 @@ const mapStateToProps = state => ({
   updateOutingMsgType: state.updateOutingMsgType,
   updateOutingMsg: state.updateOutingMsg,
 });
-export default connect(mapStateToProps, {
-  fetchOutingRequests,
-  updateOutingRequest,
-  resetMsg,
-})(ViewOutingRequests);
+export default connect(
+  mapStateToProps,
+  {
+    fetchOutingRequests,
+    updateOutingRequest,
+    resetMsg,
+  },
+)(ViewOutingRequests);

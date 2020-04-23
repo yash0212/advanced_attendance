@@ -50,6 +50,12 @@ class ViewLeaveRequests extends PureComponent {
       case 2:
         status = 'Rejected';
         break;
+      case 3:
+        status = 'Scanned';
+        break;
+      case 4:
+        status = 'Completed';
+        break;
       default:
         status = 'Unknown';
         break;
@@ -58,16 +64,25 @@ class ViewLeaveRequests extends PureComponent {
       <View style={styles.leaveContainer}>
         <TouchableOpacity
           style={styles.leave}
-          disabled={req.status === 1 ? false : true}
+          disabled={req.status === 1 || req.status === 3 ? false : true}
           onPress={() => {
+            let qrType;
+            if (req.status === 1) {
+              qrType = 1;
+            } else if (req.status === 3) {
+              qrType = 2;
+            }
             this.props.navigation.navigate('StudentDisplayCode', {
               id: req.id,
               type: 1,
+              qrType: qrType,
             });
           }}>
           {req.status === 0 && <View style={styles.statusUnapproved} />}
           {req.status === 1 && <View style={styles.statusApproved} />}
           {req.status === 2 && <View style={styles.statusRejected} />}
+          {req.status === 3 && <View style={styles.statusScanned} />}
+          {req.status === 4 && <View style={styles.statusCompleted} />}
           {status === 'Unknown' && <View style={styles.statusUnknown} />}
           <View style={styles.requestContent}>
             <Text>Out Date: {req.out_date}</Text>
@@ -140,6 +155,14 @@ const styles = StyleSheet.create({
   },
   statusUnknown: {
     backgroundColor: 'black',
+    width: 10,
+  },
+  statusScanned: {
+    backgroundColor: 'yellow',
+    width: 10,
+  },
+  statusCompleted: {
+    backgroundColor: 'blue',
     width: 10,
   },
   requestContent: {
