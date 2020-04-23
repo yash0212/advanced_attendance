@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import apiUri from '../../config/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 class ViewAttendanceForm extends PureComponent {
   state = {
@@ -24,6 +25,8 @@ class ViewAttendanceForm extends PureComponent {
     section: 'B',
     year: 4,
     loading: true,
+    showDate: false,
+    date: new Date(),
   };
   constructor(props) {
     super(props);
@@ -121,7 +124,26 @@ class ViewAttendanceForm extends PureComponent {
       });
     }
   }
+  setDate = (event, date) => {
+    date = date || this.state.outDate;
+    this.setState({
+      showDate: false,
+      date: date,
+    });
+  };
+  formatDate = date => {
+    var mm = date.getMonth() + 1; // getMonth() is zero-based
+    var dd = date.getDate();
+
+    return [
+      (dd > 9 ? '' : '0') + dd,
+      '/' + (mm > 9 ? '' : '0') + mm,
+      '/',
+      date.getFullYear(),
+    ].join('');
+  };
   render() {
+    const {showDate, date} = this.state;
     if (this.state.loading) {
       return (
         <View style={styles.container}>
@@ -132,6 +154,22 @@ class ViewAttendanceForm extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={styles.generateCodeFormContainer}>
+          {showDate && (
+            <DateTimePicker
+              value={date}
+              onChange={this.setDate}
+              maximumDate={new Date()}
+            />
+          )}
+          <TouchableOpacity
+            style={styles.date}
+            onPress={() => {
+              this.setState({
+                showDate: true,
+              });
+            }}>
+            <Text style={styles.dateText}>{this.formatDate(date)}</Text>
+          </TouchableOpacity>
           <TextInput
             onChangeText={text => this.handleLectureNumberInput(text)}
             value={this.state.lectureNumber}
@@ -215,6 +253,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  date: {
+    backgroundColor: '#ffffff',
+    minWidth: '100%',
+    marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  dateText: {
+    fontSize: 20,
+    color: '#072b3e',
   },
   lectureNumber: {
     backgroundColor: '#ffffff',

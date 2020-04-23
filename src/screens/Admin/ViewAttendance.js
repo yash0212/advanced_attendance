@@ -33,6 +33,13 @@ class ViewAttendance extends PureComponent {
   fetchStudents = () => {
     this.setState({loading: true});
     let data = this.props.navigation.getParam('data');
+
+    var mm = data.date.getMonth() + 1; // getMonth() is zero-based
+    var dd = data.date.getDate();
+    var yy = data.date.getFullYear();
+    let ddate =
+      yy + '-' + (mm > 9 ? '' : '0') + mm + '-' + (dd > 9 ? '' : '0') + dd;
+
     fetch(apiUri + '/api/fetch-students-detail', {
       method: 'post',
       headers: {
@@ -47,6 +54,7 @@ class ViewAttendance extends PureComponent {
         year: data.year,
         subject_code: data.subjectId,
         lecture_no: data.lectureNumber,
+        date: ddate,
       }),
     })
       .then(resp => resp.json())

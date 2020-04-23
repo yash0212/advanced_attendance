@@ -127,6 +127,18 @@ class CreateAttendance extends PureComponent {
       });
     }
   }
+  formatDate = () => {
+    let date = new Date();
+    var mm = date.getMonth() + 1; // getMonth() is zero-based
+    var dd = date.getDate();
+
+    return [
+      (dd > 9 ? '' : '0') + dd,
+      '/' + (mm > 9 ? '' : '0') + mm,
+      '/',
+      date.getFullYear(),
+    ].join('');
+  };
   render() {
     if (this.state.loading) {
       return (
@@ -138,6 +150,7 @@ class CreateAttendance extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={styles.generateCodeFormContainer}>
+          <Text style={styles.date}>{this.formatDate()}</Text>
           <TextInput
             onChangeText={text => this.handleLectureNumberInput(text)}
             value={this.state.lectureNumber}
@@ -228,6 +241,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  date: {
+    fontSize: 20,
+    color: '#072b3e',
+    marginBottom: 20,
   },
   lectureNumber: {
     backgroundColor: '#ffffff',

@@ -51,6 +51,19 @@ class HomeScreen extends PureComponent {
           <TouchableOpacity
             style={styles.tile}
             onPress={() => {
+              this.props.navigation.navigate('AdminStudentNotInCampus', {
+                token: this.props.token,
+              });
+            }}>
+            <Text style={styles.tileTitle}>Student Not in campus list</Text>
+            <Text style={styles.tileDescription}>
+              View the list of student those are not in campus, maybe they are
+              on leave or outing
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.tile}
+            onPress={() => {
               this.props.navigation.navigate('AdminAttendance', {
                 uid: this.props.user.id,
                 token: this.props.token,
@@ -92,19 +105,6 @@ class HomeScreen extends PureComponent {
             <Text style={styles.tileDescription}>
               Create or Update student extra details like student's phone number
               and parent's phone number
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tile}
-            onPress={() => {
-              this.props.navigation.navigate('AdminStudentNotInCampus', {
-                token: this.props.token,
-              });
-            }}>
-            <Text style={styles.tileTitle}>Student Not in campus list</Text>
-            <Text style={styles.tileDescription}>
-              View the list of student those are not in campus, maybe they are
-              on leave or outing
             </Text>
           </TouchableOpacity>
         </View>
@@ -255,12 +255,12 @@ const styles = new StyleSheet.create({
     borderRadius: 10,
   },
   tileTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#072b3e',
   },
   tileDescription: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#072b3e',
   },
 });
