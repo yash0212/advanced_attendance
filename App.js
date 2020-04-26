@@ -210,7 +210,7 @@ const HomeStackNavigator = createStackNavigator(
     },
     AdminUpdateStudentPhone: {
       screen: AdminUpdateStudentPhone,
-      navigationOptions: {title: 'Update Student Details'},
+      navigationOptions: {title: 'Create/Update Student Details'},
     },
     AdminStudentNotInCampus: {
       screen: AdminStudentNotInCampus,

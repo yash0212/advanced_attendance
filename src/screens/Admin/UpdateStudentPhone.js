@@ -145,7 +145,9 @@ class UpdateStudentPhone extends PureComponent {
               this.updateDetails();
             }}
             disabled={this.state.loading}>
-            <Text style={styles.updateDetailsButtonText}>Update Details</Text>
+            <Text style={styles.updateDetailsButtonText}>
+              Create/Update Details
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
